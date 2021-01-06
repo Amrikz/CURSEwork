@@ -4,7 +4,7 @@
 namespace App\Lib\Database;
 
 
-use App\Lib\Config;
+use Config\AppConfig;
 use mysqli;
 
 class DB
@@ -14,7 +14,7 @@ class DB
 
     public function __construct()
     {
-        $conn = new mysqli(Config::DBHOST, Config::DBLOGIN, Config::DBPASS, Config::DBNAME);
+        $conn = new mysqli(AppConfig::DBHOST, AppConfig::DBLOGIN, AppConfig::DBPASS, AppConfig::DBNAME);
         $conn->set_charset('utf8');
         if (!$conn) {
             die("database connect error!");

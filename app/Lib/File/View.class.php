@@ -4,14 +4,19 @@
 namespace App\Lib\File;
 
 
-use App\Lib\Config;
+use App\Lib\Logging\Logger;
+use Config\AppConfig;
 
 class View
 {
     public static $RequireAboveInclude = true;
 
+
     private static function GetFile($path)
     {
+        $filename = Filename::Relative($path);
+        Logger::Info(__METHOD__,"File {$filename} has been view-ed");
+
         if (self::$RequireAboveInclude)
         {
             require $path;
@@ -21,6 +26,7 @@ class View
             include $path;
         }
     }
+
 
     public static function AbsDir($path)
     {
@@ -34,6 +40,6 @@ class View
 
     public static function ViewDir($filename)
     {
-        self::GetFile(PROJECT_DIR.Config::VIEW_DIR.$filename);
+        self::GetFile(PROJECT_DIR.AppConfig::VIEW_DIR.$filename);
     }
 }

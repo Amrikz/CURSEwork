@@ -4,19 +4,19 @@
 namespace App\Controllers;
 
 
-use App\Auth\Auth;
+use App\Jobs\Auth\Auth;
 use App\Lib\Database\DB;
 use App\Lib\File\View;
 use App\Lib\Logging\Status;
 
-class HomeController extends Controller
+class HomeController extends AbstractController
 {
     public function index()
     {
         if ($_POST['auth'])
         {
             $auth = new Auth();
-            $auth->Login($_POST['login'], $_POST['password']);
+            $_SESSION['user'] = $auth->Login($_POST['login'], $_POST['password']);
         }
 
         if ($_POST['register'])
@@ -34,6 +34,7 @@ class HomeController extends Controller
         //View::RelDir(Config::VIEW_DIR . "index.php");
         //View::AbsDir(PROJECT_DIR . Config::VIEW_DIR . "index.php");
     }
+
 
     public function test($params = null, ...$args)
     {

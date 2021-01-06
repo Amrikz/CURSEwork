@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Auth;
+namespace App\Jobs\Auth;
 
 
 use App\Models\UserModel;

@@ -4,7 +4,7 @@
 namespace App\Lib\Route;
 
 
-use App\Lib\Config;
+use Config\AppConfig;
 
 class Url
 {
@@ -23,12 +23,12 @@ class Url
 
     private function argCheck($segment)
     {
-        if ($segment == Config::URL_ARG_CHAR)
+        if ($segment == AppConfig::URL_ARG_CHAR)
         {
             if (self::getSegment($this->url_trace_route) != NULL) return true;
             else return false;
         }
-        elseif ($segment == Config::URL_VARY_ARG_CHAR) return true;
+        elseif ($segment == AppConfig::URL_VARY_ARG_CHAR) return true;
         else return false;
     }
 
@@ -82,8 +82,8 @@ class Url
         foreach ($res as $key => $value)
         {
             $this->url_trace_route++;
-            if ($value == Config::URL_ARG_CHAR ||
-            $value == Config::URL_VARY_ARG_CHAR) $fin_arr[] = self::getSegment($this->url_trace_route);
+            if ($value == AppConfig::URL_ARG_CHAR ||
+            $value == AppConfig::URL_VARY_ARG_CHAR) $fin_arr[] = self::getSegment($this->url_trace_route);
         }
 
         $this->url_trace_route = -1;

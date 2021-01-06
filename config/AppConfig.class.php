@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Lib;
+namespace Config;
 
 
-class Config
+class AppConfig
 {
     //Database
     const DBHOST   = '127.0.0.1';
@@ -16,6 +16,8 @@ class Config
     //Files
     //Relative path to /view
     const VIEW_DIR = DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR;
+    //Relative path to /logs
+    const LOGS_DIR = DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR;
 
 
     //Routing

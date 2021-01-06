@@ -87,7 +87,7 @@ http://www.templatemo.com/tm-482-strip
                 <!-- #home -->
                 <div style="color: black">
                 <?php
-                $auth = new App\Auth\Auth();
+                $auth = new App\Jobs\Auth\Auth();
                 $status = $auth->status->status;
                 //var_dump($status);
                 if(isset($status['message']) || $status['required']) {?>
