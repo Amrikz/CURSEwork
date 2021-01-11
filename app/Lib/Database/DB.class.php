@@ -4,6 +4,7 @@
 namespace App\Lib\Database;
 
 
+use App\Lib\Logging\Logger;
 use Config\AppConfig;
 use mysqli;
 
@@ -17,6 +18,7 @@ class DB
         $conn = new mysqli(AppConfig::DBHOST, AppConfig::DBLOGIN, AppConfig::DBPASS, AppConfig::DBNAME);
         $conn->set_charset('utf8');
         if (!$conn) {
+            Logger::Error(__METHOD__, $conn->error);
             die("database connect error!");
         }
         $this->conn = $conn;
@@ -36,6 +38,8 @@ class DB
     public function query($sql)
     {
         $res = $this->conn->query($sql);
+        Logger::Info(__METHOD__, $sql);
+        if ($this->conn->error) Logger::Error(__METHOD__, "Query error: ".$this->conn->error);
         return $res;
     }
 

@@ -33,13 +33,15 @@ class Auth
         $this->password_name    = UserModel::$password_name;
         $this->role_name        = UserModel::$role_name;
 
+        $this->status->SwitcherRegister('-1', 'message', '');
+        $this->status->SwitcherRegister('-1', 'status', false);
+
+
         $this->status->SwitcherRegister('0','message','Вы успешно авторизировались!');
         $this->status->SwitcherRegister('0','status',true);
 
         $this->status->SwitcherRegister('1','message',"Комбинация логин|пароль не найдены");
         $this->status->SwitcherRegister('1','status',false);
-
-        //$this->status->SwitcherFunctionRegister('1', $this->status->AddValue());
 
     }
 
@@ -86,7 +88,7 @@ class Auth
             }
             else
             {
-                $error                      = $conn->conn->error;
+                $error                              = $conn->conn->error;
                 $this->status->status['status']     = false;
                 $this->status->status['message']    = "query error! Error: $error";
                 return false;

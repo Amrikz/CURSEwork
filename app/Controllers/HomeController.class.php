@@ -13,18 +13,18 @@ class HomeController extends AbstractController
 {
     public function index()
     {
-        if ($_POST['auth'])
+        if (isset($_POST['auth']))
         {
             $auth = new Auth();
             $_SESSION['user'] = $auth->Login($_POST['login'], $_POST['password']);
         }
 
-        if ($_POST['register'])
+        if (isset($_POST['register']))
         {
             //Auth::Register($_POST['login'], $_POST['password'], $_POST['confirm_password']);
         }
 
-        if ($_POST['exit'])
+        if (isset($_POST['exit']))
         {
             session_unset();
             session_destroy();
@@ -53,9 +53,15 @@ class HomeController extends AbstractController
 
         $status = new Status();
         $status->SwitcherRegister('0','message','Вы успешно авторизировались!');
+
         var_dump($status);
         $status->StatusSwitch(0);
         echo "<br><br>";
         var_dump($status->status["message"]);
+        echo "<br><br>";
+        var_dump($status);
+        echo "<br><br>";
+
+        var_dump(array_flip(array_slice(get_defined_constants(true)['Core'], 0, 16, true)));
     }
 }

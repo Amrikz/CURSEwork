@@ -6,9 +6,18 @@ namespace App\Lib\File;
 
 class Filename
 {
-    public static function Relative($filename)
+
+    public static function Relative($path)
     {
-        $filename = str_replace(PROJECT_DIR,'', $filename);
-        return $filename;
+        $path = str_replace(PROJECT_DIR,'', $path);
+        return $path;
+    }
+
+
+    public static function NameExt($path)
+    {
+        $path = explode(DIRECTORY_SEPARATOR, $path);
+        $key = array_key_last($path);
+        return $path[$key];
     }
 }

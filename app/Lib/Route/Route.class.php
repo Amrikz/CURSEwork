@@ -4,6 +4,8 @@
 namespace App\Lib\Route;
 
 
+use App\Lib\Logging\Logger;
+
 class Route
 {
     private static $_404 = 0;
@@ -28,11 +30,13 @@ class Route
             $controller = new $controllerName();
             if(method_exists($controller, $actionName))
             {
+                Logger::Info(__METHOD__, "$controllerName->$actionName");
                 $controller->$actionName($parameters, ...$args);
                 die;
             }
             else
             {
+                Logger::Error(__METHOD__, "Method '$controllerName->$actionName' not found");
                 echo "Method not found";
                 die;
             }

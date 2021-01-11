@@ -73,12 +73,6 @@ class Status
     }
 
 
-    public function SwitcherFunctionRegister()
-    {
-        
-    }
-
-
     public function SwitcherUnregister($status)
     {
         $ok = false;

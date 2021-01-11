@@ -2,6 +2,4 @@
 
 use App\Lib\Route\Route;
 
-
-
-Route::done();
+//Route::get('a',App\Controllers\HomeController::class,'index');

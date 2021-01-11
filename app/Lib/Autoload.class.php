@@ -42,8 +42,9 @@ class Autoload
 
             if (in_array($path[$length - 1], AppConfig::AUTOLOAD_BLACKLIST))
             {
-                Logger::Info(__CLASS__,"Class '{$className}' is blacklisted from autoload");
-                die("Class '{$className}' is blacklisted from autoload");
+                Logger::Warn(__CLASS__,"Class '{$className}' is blacklisted from autoload");
+                return;
+                //die("Class '{$className}' is blacklisted from autoload");
             }
 
             if (count($extensions) > 1)
@@ -65,7 +66,6 @@ class Autoload
 
             require_once $finPath;
             Logger::Info(__CLASS__,"Class '{$className}' Loaded");
-
         });
     }
 

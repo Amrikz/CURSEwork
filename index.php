@@ -1,6 +1,13 @@
 <?php
 
 /*
+ * COURSEWORK mini-Framework
+ * 2020-2021 By Rikz.
+ * https://github.com/Amrikz/CURSEwork
+*/
+
+
+/*
  * Define project root directory
  */
 define('PROJECT_DIR', __DIR__);
@@ -8,12 +15,12 @@ define('PROJECT_DIR', __DIR__);
 /*
  * Init modules in one place
  */
-require_once 'app' . DIRECTORY_SEPARATOR . 'Lib' . DIRECTORY_SEPARATOR . 'init.inc.php';
+require_once join(DIRECTORY_SEPARATOR,['app','Lib','Includes','init.php']);
 
 /*
  * Routes middleware
  */
-require_once 'app'.DIRECTORY_SEPARATOR.'routes'.DIRECTORY_SEPARATOR.'web.php';
+require_once join(DIRECTORY_SEPARATOR,['app','Lib','Middleware','RouteMiddleware.php']);
 
 
 
@@ -26,7 +33,10 @@ require_once 'app'.DIRECTORY_SEPARATOR.'routes'.DIRECTORY_SEPARATOR.'web.php';
  + TODO: Rename vendor and its namespace to lib.
  * TODO: Move index.php to /public.
  * TODO: Migrate DB from Mysqli to PDO.
- + TODO: Refactor Config classes AND move them to /config
- * TODO: Routeworks. Make routes vary get/post
+ + TODO: Refactor Config classes AND move them to /config.
+ * TODO: Routeworks. Make routes vary get/post. Make api.php links start with /api.
  * TODO: Get rid of mess. Clean all.
+ * TODO: MIDDLEWARES. Work on it.
+ + TODO: Handlers. Error and exception handlers.
+ ~ TODO: Add Helper functions.
 */

@@ -6,6 +6,10 @@ namespace Config;
 
 class AppConfig
 {
+    //APP
+    const DEBUG_MODE = true;
+    const ERROR_REPORTING = E_ALL;
+
     //Database
     const DBHOST   = '127.0.0.1';
     const DBLOGIN  = 'root';

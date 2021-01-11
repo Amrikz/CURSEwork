@@ -32,6 +32,12 @@ class File
     }
 
 
+    public function Name()
+    {
+        return Filename::NameExt($this->path);
+    }
+
+
     public function Delete()
     {
         $this->file = null;

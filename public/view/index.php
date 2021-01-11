@@ -53,7 +53,7 @@ http://www.templatemo.com/tm-482-strip
                                 <li class="nav-item">
                                     <a class="nav-link" href="#tm-section-4">Контакты</a>
                                 </li>
-                                <?php if(!$_SESSION['user']) { ?>
+                                <?php if(!isset($_SESSION['user'])) { ?>
                                     <li class="nav-item">
                                         <a class="nav-link" href="" data-toggle="modal" data-target="#exampleModal">Аккаунт</a>
                                     </li>

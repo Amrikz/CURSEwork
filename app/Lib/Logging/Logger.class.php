@@ -28,7 +28,9 @@ class Logger
 
     public static function Initialize($filename = 'main')
     {
-        $today      = Time::Current("d-m-Y");
+        if (self::$logfile && $filename == self::$logfile->Name()) return self::$logfile;
+
+        $today      = Time::Current("Y-m-d");
         $logname    = $today.'_'.$filename.'.log';
         $filepath   = AppConfig::LOGS_DIR.$logname;
 
@@ -66,7 +68,7 @@ class Logger
     }
 
 
-    public static function Error($classname, $message, $important = false)
+    public static function Error($classname, $message, $important = true)
     {
         self::Log_gate('ERROR', $classname, $message, $important);
     }
