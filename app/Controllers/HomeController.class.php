@@ -5,9 +5,7 @@ namespace App\Controllers;
 
 
 use App\Jobs\Auth\Auth;
-use App\Lib\Database\DB;
 use App\Lib\File\View;
-use App\Lib\Logging\Status;
 
 class HomeController extends AbstractController
 {
@@ -21,7 +19,8 @@ class HomeController extends AbstractController
 
         if (isset($_POST['register']))
         {
-            //Auth::Register($_POST['login'], $_POST['password'], $_POST['confirm_password']);
+            $auth = new Auth();
+            $_SESSION['user'] = $auth->Register($_POST['login'], $_POST['password'], $_POST['confirm_password']);
         }
 
         if (isset($_POST['exit']))
@@ -30,38 +29,12 @@ class HomeController extends AbstractController
             session_destroy();
         }
 
-        View::ViewDir('index.php');
-        //View::RelDir(Config::VIEW_DIR . "index.php");
-        //View::AbsDir(PROJECT_DIR . Config::VIEW_DIR . "index.php");
+        View::ViewDir('pages/index.php');
     }
 
 
     public function test($params = null, ...$args)
     {
-        $conn = new DB;
-        var_dump($conn);
 
-        echo "<br><br>";
-
-        var_dump($params);
-
-        echo "<br><br>";
-
-        var_dump($args);
-
-        echo "<br><br>";
-
-        $status = new Status();
-        $status->SwitcherRegister('0','message','Вы успешно авторизировались!');
-
-        var_dump($status);
-        $status->StatusSwitch(0);
-        echo "<br><br>";
-        var_dump($status->status["message"]);
-        echo "<br><br>";
-        var_dump($status);
-        echo "<br><br>";
-
-        var_dump(array_flip(array_slice(get_defined_constants(true)['Core'], 0, 16, true)));
     }
 }

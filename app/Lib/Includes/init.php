@@ -13,7 +13,9 @@ session_start();
 error_reporting(AppConfig::ERROR_REPORTING);
 
 Autoload::safeMode();
+
 Logger::Initialize();
+if (AppConfig::LOGGER_MUTE) Logger::Mute();
 
 Autoload::dynamicMode();
 
@@ -21,6 +23,5 @@ require_once join(DIRECTORY_SEPARATOR,['app','Lib','Includes','Helpers.php']);
 
 ExceptionHandler::Set();
 ErrorHandler::Set();
-
 
 Logger::Info(Filename::Relative(__FILE__), "Initialization complete", true);

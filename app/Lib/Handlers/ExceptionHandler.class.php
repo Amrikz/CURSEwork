@@ -5,6 +5,7 @@ namespace App\Lib\Handlers;
 
 
 use App\Lib\Logging\Logger;
+use Config\AppConfig;
 
 class ExceptionHandler
 {
@@ -32,7 +33,8 @@ class ExceptionHandler
                 $exception->getMessage(), "in", $exception->getFile(), "line", $exception->getLine(), "code:", $exception->getCode(),
                 "\nstack trace:", $exception->getTraceAsString()]);
             Logger::Error(__CLASS__, $message);
-            echo "Ошибка в коде! Смотри логи. И доделай эту страничку.";
+            if (AppConfig::DEBUG_MODE) echo "<b>$message</b>";
+            die();
         });
     }
 }

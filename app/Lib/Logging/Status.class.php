@@ -4,7 +4,7 @@
 namespace App\Lib\Logging;
 
 
-class Status
+class Status implements StatusInterface
 {
     public $status;
 
@@ -33,15 +33,22 @@ class Status
     }
 
 
-    public function Get()
+    public function GetArrStatus()
     {
         return $this->status;
     }
 
 
-    public function AddValue($id, $value)
+    public function GetJsonStatus()
     {
-        $this->status[$id] .= $value;
+        return json_encode(self::GetArrStatus());
+    }
+
+
+    public function AddValue($id, $value, $delimiter = ',')
+    {
+        if ($this->status[$id]) $this->status[$id] .= $delimiter.$value;
+        $this->status[$id] = $value;
     }
 
 

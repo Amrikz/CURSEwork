@@ -4,11 +4,11 @@
 namespace App\Jobs\Auth;
 
 
-use App\Models\UserModel;
-use App\Lib\Database\DB;
+use App\Lib\Logging\StatusInterface;
+use App\Models\Users;
 use App\Lib\Logging\Status;
 
-class Auth
+class Auth implements StatusInterface
 {
     public $status;
 
@@ -27,11 +27,11 @@ class Auth
             "required"  => null
         ]);
 
-        $this->table_name       = UserModel::$table_name;
-        $this->id_name          = UserModel::$id_name;
-        $this->login_name       = UserModel::$login_name;
-        $this->password_name    = UserModel::$password_name;
-        $this->role_name        = UserModel::$role_name;
+        $this->table_name       = Users::$table_name;
+        $this->id_name          = Users::$id_name;
+        $this->login_name       = Users::$login_name;
+        $this->password_name    = Users::$password_name;
+        $this->role_name        = Users::$role_name;
 
         $this->status->SwitcherRegister('-1', 'message', '');
         $this->status->SwitcherRegister('-1', 'status', false);
@@ -43,6 +43,14 @@ class Auth
         $this->status->SwitcherRegister('1','message',"Комбинация логин|пароль не найдены");
         $this->status->SwitcherRegister('1','status',false);
 
+        $this->status->SwitcherRegister('2','message',"Пользователь с таким именем уже существует");
+        $this->status->SwitcherRegister('2','status',false);
+
+        $this->status->SwitcherRegister('3','message',"Пароли не совпадают");
+        $this->status->SwitcherRegister('3','status',false);
+
+        $this->status->SwitcherRegister('4','message',"Успешно зарегистрировано!");
+        $this->status->SwitcherRegister('4','status',true);
     }
 
 
@@ -52,52 +60,47 @@ class Auth
     }
 
 
-	public function Login($login,$password)
+    public function GetArrStatus()
+    {
+        return $this->status->GetArrStatus();
+    }
+
+
+    public function GetJsonStatus()
+    {
+        return $this->status->GetJsonStatus();
+    }
+
+
+    public function Login($login,$password)
 	{
 		$this->NullifyStatus();
 
 		if ($login && $password)
 		{
-            $conn = Db::getConn();
-            //$login = trim($login, '+-()"[]/');
-            $stmt = $conn->conn->stmt_init();
-            if ($stmt->prepare("SELECT $this->id_name,$this->login_name,$this->password_name,$this->role_name FROM $this->table_name  WHERE $this->login_name = ? LIMIT 1"))
+		    $user = Users::GetByLogin($login);
+            $password = password_verify($password, $user['password']);
+            if ($password && $user['id'])
             {
-                $stmt->bind_param('s', $login);
-                $stmt->execute();
-                $stmt->bind_result($id, $login, $hash, $role);
-                $stmt->fetch();
-                $stmt->close();
-                $password = password_verify($password, $hash);
-                if ($password && $id)
-                {
-                    $this->status->StatusSwitch(0);
+                $this->status->StatusSwitch(0);
 
-                    $user = array([
-                        'id'    => $id,
-                        'login' => $login,
-                        'role'  => $role
-                    ]);
-                    return $user;
-                }
-                else
-                {
-                    $this->status->StatusSwitch(1);
-                    return false;
-                }
+                $user = array([
+                    'id'    => $user['id'],
+                    'login' => $user['login'],
+                    'role'  => $user['role']
+                ]);
+                return $user;
             }
             else
             {
-                $error                              = $conn->conn->error;
-                $this->status->status['status']     = false;
-                $this->status->status['message']    = "query error! Error: $error";
+                $this->status->StatusSwitch(1);
                 return false;
             }
         }
 		else
         {
             if (!$login)    $this->status->AddValue("required",'Введите логин');
-            if (!$password) $this->status->AddValue("required",' Введите пароль');
+            if (!$password) $this->status->AddValue("required",'Введите пароль');
             $this->status->SetValue("status",false);
 
             return false;
@@ -105,69 +108,46 @@ class Auth
     }
 
 
-    public static function Register($login, $password, $confirm_password)
+    public function Register($login, $password, $confirm_password)
     {
-        self::$status = array('message' => '');
+        $this->NullifyStatus();
 
-        if ($login && $password && $confirm_password) {
-            if ($password == $confirm_password) {
-                $conn = Db::getConn();
-                $login = trim($login, '+-()"[]/');
-                $stmt = $conn->conn->stmt_init();
-                if ($stmt->prepare("SELECT id FROM l_users WHERE login = ? LIMIT 1 ")) {
-                    $stmt->bind_param('s', $login);
-                    $stmt->execute();
-                    $stmt->bind_result($id);
-                    $stmt->fetch();
-                    if ($id) {
-                        self::$status['message'] = "Пользователь с таким именем уже существует";
-                        return false;
-                    }
-                    $stmt->close();
-                } else {
-                    $error = $conn->conn->error;
-                    self::$status['message'] = "query error! Error: $error";
+        if ($login && $password && $confirm_password)
+        {
+            if ($password == $confirm_password)
+            {
+                $user = Users::GetByLogin($login);
+                if ($user['id'])
+                {
+                    $this->status->StatusSwitch(2);
                     return false;
                 }
+
                 $password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 7]);
 
-                $stmt = $conn->conn->stmt_init();
-
-                if ($stmt->prepare("INSERT INTO `l_users` (`id`, `login`, `password`) VALUES (NULL, '$login', '$password')")) {
-                    $stmt->execute();
-                    if ($stmt->affected_rows == 1) {
-                        self::$status['message'] = "Успешно зарегистрировано!";
-                        $_SESSION['user']['id'] = $id;
-                        $_SESSION['user']['login'] = $login;
-                        $_SESSION['user']['role'] = 1;
-                        return true;
-                    } else {
-                        $error = $stmt->error;
-                        self::$status['message'] = "Unknown column(s) to create. Error: $error";
-                        return false;
-                    }
-                } else {
-                    $error = $conn->conn->error;
-                    self::$status['message'] = "query error! Error: $error";
-                    return false;
+                if (Users::RegisterInsert($login, $password) == 1)
+                {
+                    $this->status->StatusSwitch(4);
+                    $_SESSION['user']['id']     = $user['id'];
+                    $_SESSION['user']['login']  = $user['login'];
+                    $_SESSION['user']['role']   = $user['role'];
+                    return true;
                 }
-            } else {
-                self::$status['message'] = "Пароли не совпадают";
+                return false;
+            }
+            else
+            {
+                $this->status->StatusSwitch(3);
                 return false;
             }
 		}
-		else {
-            if (!$login) {
-                self::$status['message'] = self::$status['message'] . " Введите логин";
-            }
-            if (!$password) {
-                self::$status['message'] = self::$status['message'] . " Введите пароль";
-            }
-            if (!$confirm_password) {
-                self::$status['message'] = self::$status['message'] . " Введите подтверждение пароля";
-            }
+		else
+        {
+            if (!$login)            $this->status->AddValue("required",'Введите логин');
+            if (!$password)         $this->status->AddValue("required",'Введите пароль');
+            if (!$confirm_password) $this->status->AddValue("required",'Введите подтверждение пароля');
+            $this->status->SetValue("status",false);
             return false;
         }
 	}
-
 }

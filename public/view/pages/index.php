@@ -286,7 +286,7 @@ http://www.templatemo.com/tm-482-strip
                                 <span class="green-text contact-info">
                                 	Tel: <a href="tel:0100200340" class="contact-info-link">010-020-0340</a></span>
                                 <span class="green-text contact-info">
-                                	Email: <a href="mailto:info@company.com" class="contact-info-link">info@company.com</a></span>    
+                                	Email: <a href="../../../index.php" class="contact-info-link">info@company.com</a></span>
                             </div>
                             
                         </div>                        

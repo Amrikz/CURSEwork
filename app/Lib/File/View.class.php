@@ -12,22 +12,6 @@ class View
     public static $RequireAboveInclude = true;
 
 
-    private static function GetFile($path)
-    {
-        $filename = Filename::Relative($path);
-        Logger::Info(__METHOD__,"File {$filename} has been view-ed");
-
-        if (self::$RequireAboveInclude)
-        {
-            require $path;
-        }
-        else
-        {
-            include $path;
-        }
-    }
-
-
     public static function AbsDir($path)
     {
         self::GetFile($path);
@@ -41,5 +25,15 @@ class View
     public static function ViewDir($filename)
     {
         self::GetFile(PROJECT_DIR.AppConfig::VIEW_DIR.$filename);
+    }
+
+
+    private static function GetFile($path)
+    {
+        $filename = Filename::Relative($path);
+        Logger::Info(__METHOD__,"File {$filename} has been view-ed");
+
+        if (self::$RequireAboveInclude) require $path;
+        else include $path;
     }
 }
