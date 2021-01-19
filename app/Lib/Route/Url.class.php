@@ -89,4 +89,20 @@ class Url
         $this->url_trace_route = -1;
         return $fin_arr;
     }
+
+
+    public static function getUrlAddition() {
+        return str_replace($_GET['url'],'', $_SERVER['REQUEST_URI']);
+    }
+
+
+    public static function addPrefixToHref(&$arr, $needle = 'href=')
+    {
+        $addition = rtrim(self::getUrlAddition(),'/');
+        if ($addition)
+        foreach ($arr as $key=>$value)
+        {
+            $arr[$key] = substr_replace($value, $addition, strpos($value, $needle) + strlen($needle) + 1, 0);
+        }
+    }
 }

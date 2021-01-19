@@ -12,10 +12,4 @@ class HomeController extends AbstractController
     {
         View::ViewDir('pages'.DIRECTORY_SEPARATOR.'index.php');
     }
-
-
-    /*public function test($params = null, ...$args)
-    {
-
-    }*/
 }
