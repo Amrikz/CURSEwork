@@ -14,11 +14,12 @@ function makeError($text, $error = null)
 }
 
 
-function arrayToStr($arr, $delimiter = ',')
+function arrayToStr($arr, $delimiter = ',', $recursive = false)
 {
     $res = null;
     foreach ($arr as $key=>$value)
     {
+        if (is_array($value) && $recursive == true) $value = arrayToStr($value, $delimiter, true);
         if (is_null($value)) $value = 'null';
         if (is_bool($value) === true) $value = $value ? 'true' : 'false';
         $res .= "$key = $value"."$delimiter";
@@ -38,11 +39,12 @@ function arrayKeysToStr($arr, $delimiter = ',')
 }
 
 
-function arrayDataToStr($arr, $delimiter = ',')
+function arrayDataToStr($arr, $delimiter = ',', $recursive = false)
 {
     $res = null;
     foreach ($arr as $key=>$value)
     {
+        if (is_array($value) && $recursive == true) $value = arrayDataToStr($value, $delimiter, true);
         if (is_null($value)) $value = 'null';
         if (is_bool($value) === true) $value = $value ? 'true' : 'false';
         $res .= "$value"."$delimiter";

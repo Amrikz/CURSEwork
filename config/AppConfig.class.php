@@ -4,7 +4,7 @@
 namespace Config;
 
 
-use App\Lib\Database\PdoDB;
+use App\Lib\Database\SqlsrvDB;
 
 class AppConfig
 {
@@ -18,13 +18,13 @@ class AppConfig
 
 
     //Database
-    const DBHOST    = '';
+    const DBHOST    = 'DESKTOP-8LNIV3K\SQLEXPRESS';
+    const DBNAME    = 'CinemaBase';
     const DBLOGIN   = '';
     const DBPASS    = '';
-    const DBNAME    = '';
-    const DBCHARSET = 'utf8';
+    const DBCHARSET = 'utf-8';
 
-    const REPOSITORY_DB_CLASS       = PdoDB::class;
+    const REPOSITORY_DB_CLASS       = SqlsrvDB::class;
     const REPOSITORY_STATEMENT_MODE = true;
 
 

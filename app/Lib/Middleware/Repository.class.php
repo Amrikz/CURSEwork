@@ -85,7 +85,7 @@ class Repository
             case "DELETE":
                 return join(' ', [
                     $operation,
-                    "FROM `$table`",
+                    "FROM $table",
                     self::WhereWrapper(self::ParamAdapter($where, 'all', " $where_delimiter ")),
                     self::ParamAdapter($params, 'all', " $params_delimiter ")
                 ]);
@@ -93,7 +93,7 @@ class Repository
             case "UPDATE":
             return join(' ', [
                 $operation,
-                "`$table`",
+                "$table",
                 "SET",
                 self::ParamAdapter($what),
                 self::WhereWrapper(self::ParamAdapter($where, 'all', " $where_delimiter ")),
@@ -104,7 +104,7 @@ class Repository
                 return join(' ', [
                     $operation,
                     self::ParamAdapter($what, 'data'),
-                    "FROM `$table`",
+                    "FROM $table",
                     self::WhereWrapper(self::ParamAdapter($where, 'all', " $where_delimiter ")),
                     self::ParamAdapter($params, 'all', " $params_delimiter ")
                 ]);
@@ -112,7 +112,7 @@ class Repository
             case "INSERT":
                 return join(' ', [
                     $operation." INTO",
-                    "`$table`",
+                    "$table",
                     '('.self::ParamAdapter($what, 'keys').')',
                     'VALUES',
                     '('.self::ParamAdapter($what, 'data').')',
@@ -166,11 +166,11 @@ class Repository
                     $res .= "'$value',";
                     break;
                 case 'keys':
-                    $res .= "`$key`,";
+                    $res .= "$key,";
                     break;
                 case 'all':
                     self::$params[] = $value;
-                    $res .= "`$key` = ?,";
+                    $res .= "$key = ?,";
                     break;
             }
         }

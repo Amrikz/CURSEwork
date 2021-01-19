@@ -34,14 +34,13 @@ class Users extends AbstractModel
         $where = [
             self::$login_name => $login
         ];
-        return parent::Select($what, self::$table_name, $where, "LIMIT 1")[0];
+        return parent::Select($what, self::$table_name, $where)[0];
     }
 
 
     public static function RegisterInsert($login, $password)
     {
         $what = [
-            self::$id_name          => null,
             self::$login_name       => $login,
             self::$password_name    => $password
         ];
