@@ -49,3 +49,16 @@ function arrayDataToStr($arr, $delimiter = ',')
     }
     return trim($res, $delimiter);
 }
+
+
+function forEachEcho($arr)
+{
+    if (!$arr) return false;
+
+    foreach ($arr as $key=>$value)
+    {
+        echo $value;
+    }
+
+    return true;
+}

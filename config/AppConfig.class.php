@@ -33,6 +33,7 @@ class AppConfig
     //Logger
     const LOGGER_MUTE = false;
 
+
     //Routing
     const URL_ARG_CHAR      = '*';
     const URL_VARY_ARG_CHAR = '~';

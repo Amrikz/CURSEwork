@@ -12,12 +12,6 @@ class Auth implements StatusInterface
 {
     public $status;
 
-    public $table_name;
-    public $id_name;
-    public $login_name;
-    public $password_name;
-    public $role_name;
-
 
     public function __construct()
     {
@@ -26,12 +20,6 @@ class Auth implements StatusInterface
             "message"   => null,
             "required"  => null
         ]);
-
-        $this->table_name       = Users::$table_name;
-        $this->id_name          = Users::$id_name;
-        $this->login_name       = Users::$login_name;
-        $this->password_name    = Users::$password_name;
-        $this->role_name        = Users::$role_name;
 
         $this->status->SwitcherRegister('-1', 'message', '');
         $this->status->SwitcherRegister('-1', 'status', false);

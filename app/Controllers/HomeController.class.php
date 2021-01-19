@@ -11,6 +11,12 @@ class HomeController extends AbstractController
 {
     public function index()
     {
+        View::ViewDir('pages/index.php');
+    }
+
+
+    public function test($params = null, ...$args)
+    {
         if (isset($_POST['auth']))
         {
             $auth = new Auth();
@@ -29,12 +35,6 @@ class HomeController extends AbstractController
             session_destroy();
         }
 
-        View::ViewDir('pages/index.php');
-    }
-
-
-    public function test($params = null, ...$args)
-    {
-
+        View::ViewDir('pages/index_old.php');
     }
 }

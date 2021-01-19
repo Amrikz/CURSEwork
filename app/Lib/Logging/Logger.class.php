@@ -76,12 +76,14 @@ class Logger
 
     public static function Mute()
     {
+        self::Info(__CLASS__, "Logger muted!", 1);
         self::$no_more_log = true;
     }
 
 
     public static function UnMute()
     {
+        self::Info(__CLASS__, "Logger unmuted!", 1);
         self::$no_more_log = false;
     }
 }
