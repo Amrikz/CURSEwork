@@ -23,8 +23,13 @@ class Directory
     }
 
 
-    public function Delete ($dir_path)
+    public function Delete ($dir_path = null)
     {
-
+        if (!$dir_path) $dir_path = $this->path;
+        $files = array_diff(scandir($dir_path), array('.','..'));
+        foreach ($files as $file) {
+            (is_dir("$dir_path/$file")) ? self::Delete("$dir_path/$file") : unlink("$dir_path/$file");
+        }
+        return rmdir($dir_path);
     }
 }

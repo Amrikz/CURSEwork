@@ -2,7 +2,7 @@
 
 use Config\AppConfig;
 
-$params = $GLOBALS['header_params'];
+$params = $GLOBALS['head_params'];
 ?>
 
 

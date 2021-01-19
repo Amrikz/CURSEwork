@@ -13,23 +13,22 @@ $phrases = [
 ];
 
 
-$params =& $GLOBALS['header_params'];
+$params =& $GLOBALS['head_params'];
 
-$params['title'] = "Index";
-$params['links'] = [
+$params['title']    = "Index";
+$params['links']    = [
     "<link rel='stylesheet' href='/public/css/welcome.css'>",
 ];
-$params['scripts'] = [
+$params['scripts']  = [
 ];
-$params['style'] = [
+$params['style']    = [
 ];
 
-View::ViewDir("blocks/header.php");
+View::ViewDir('blocks'.DIRECTORY_SEPARATOR.'head.php');
 ?>
 
 <body>
     <header>
-
     </header>
     <section id="content">
         <p>CURSEWORK</p>
@@ -38,4 +37,4 @@ View::ViewDir("blocks/header.php");
 </body>
 
 <?php
-View::ViewDir("blocks/footer.php");
+View::ViewDir('blocks'.DIRECTORY_SEPARATOR.'footer.php');

@@ -12,11 +12,16 @@ class AppConfig
     const DEBUG_MODE        = true;
     const ERROR_REPORTING   = E_ALL;
 
+
+    //Logger
+    const LOGGER_MUTE = false;
+
+
     //Database
-    const DBHOST    = '127.0.0.1';
-    const DBLOGIN   = 'root';
-    const DBPASS    = 'root';
-    const DBNAME    = 'cinemabase';
+    const DBHOST    = '';
+    const DBLOGIN   = '';
+    const DBPASS    = '';
+    const DBNAME    = '';
     const DBCHARSET = 'utf8';
 
     const REPOSITORY_DB_CLASS       = PdoDB::class;
@@ -28,10 +33,6 @@ class AppConfig
     const VIEW_DIR = DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR;
     //Relative path to /logs
     const LOGS_DIR = DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR;
-
-
-    //Logger
-    const LOGGER_MUTE = false;
 
 
     //Routing
