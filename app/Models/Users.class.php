@@ -27,13 +27,13 @@ class Users extends AbstractModel
         $what = [
             self::$id_name,
             self::$login_name,
-            self::$password_name,
-            self::$role_name
+            self::$password_name
         ];
 
         $where = [
             self::$login_name => $login
         ];
+
         return parent::Select($what, self::$table_name, $where)[0];
     }
 

@@ -18,8 +18,14 @@ class HomeController extends AbstractController
 
     public function test()
     {
-        var_dump(Users::GetAll());
+        /*Users::GetAll();
         $auth = new Auth();
-        $auth->Register('qeq','qweqwe','qweqwe');
+        var_dump($auth->Register('qeq','qweqwe','qweqwe'));
+        echo '<br><br>';
+        var_dump($auth->GetArrStatus());
+        echo '<br><br>';
+        var_dump($auth->Login('qeq','qweqwe'));
+        echo '<br><br>';
+        var_dump($auth->GetArrStatus());*/
     }
 }

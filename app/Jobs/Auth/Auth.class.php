@@ -67,7 +67,7 @@ class Auth implements StatusInterface
 		if ($login && $password)
 		{
 		    $user = Users::GetByLogin($login);
-            $password = password_verify($password, $user['password']);
+            $password = password_verify($password, trim($user['password']));
             if ($password && $user['id'])
             {
                 $this->status->StatusSwitch(0);
@@ -111,7 +111,7 @@ class Auth implements StatusInterface
                     return false;
                 }
 
-                $password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 7]);
+                $password = trim(password_hash($password, PASSWORD_BCRYPT));
 
                 if (Users::RegisterInsert($login, $password) == 1)
                 {

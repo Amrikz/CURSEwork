@@ -5,6 +5,7 @@ namespace App\Lib\Middleware;
 
 
 use App\Lib\Database\DBInterface;
+use App\Lib\Database\SqlsrvDB;
 use Config\AppConfig;
 
 class Repository
@@ -103,7 +104,7 @@ class Repository
             case "SELECT":
                 return join(' ', [
                     $operation,
-                    self::ParamAdapter($what, 'data'),
+                    self::SqlsrvParamAdapter($what,'data'),
                     "FROM $table",
                     self::WhereWrapper(self::ParamAdapter($where, 'all', " $where_delimiter ")),
                     self::ParamAdapter($params, 'all', " $params_delimiter ")
@@ -156,6 +157,16 @@ class Repository
         {
             switch ($mode)
             {
+                case 'sqlsrv_data':
+                    if (is_null($value))
+                    {
+                        $value = 'NULL';
+                        $res .= "$value,";
+                        break;
+                    }
+                    $res .= "[$value],";
+                    break;
+
                 case 'data':
                     if (is_null($value))
                     {
@@ -183,5 +194,12 @@ class Repository
     {
         if (!is_null($res)) $res = "WHERE $res";
         return $res;
+    }
+
+
+    private static function SqlsrvParamAdapter($param, $mode = 'all')
+    {
+        if (AppConfig::REPOSITORY_DB_CLASS == SqlsrvDB::class) return self::ParamAdapter($param, 'sqlsrv_'.$mode);
+        return self::ParamAdapter($param, 'data');
     }
 }

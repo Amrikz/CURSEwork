@@ -60,7 +60,7 @@ class SqlsrvDB implements DBInterface
         }
         Logger::Info(__METHOD__, $sql);
         $res = sqlsrv_query(self::$conn, $sql);
-        if (!$res)
+        if (sqlsrv_errors())
         {
             Logger::Error(__METHOD__, var_export(sqlsrv_errors(),true));
             makeError("Query error!");
@@ -89,6 +89,8 @@ class SqlsrvDB implements DBInterface
         }
         while ($row);
 
+        $this->res = null;
+
         return $res;
     }
 
@@ -111,6 +113,7 @@ class SqlsrvDB implements DBInterface
         }
 
         if ($params) Logger::Info(__METHOD__, "Params: ".arrayDataToStr($params));
+
         $this->stmt = sqlsrv_prepare(self::$conn, $this->stmt, $params);
         sqlsrv_execute($this->stmt);
         if (sqlsrv_errors())
