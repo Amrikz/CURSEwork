@@ -4,6 +4,7 @@
 namespace App\Lib\Route;
 
 
+use App\Lib\Errors\ErrProcessor;
 use App\Lib\Logging\Logger;
 
 class Route
@@ -36,8 +37,7 @@ class Route
             }
             else
             {
-                Logger::Error(__METHOD__, "Method '$controllerName->$actionName' not found");
-                echo "Method not found";
+                ErrProcessor::MakeError("Method '$controllerName->$actionName' not found");
                 die;
             }
         }

@@ -5,6 +5,7 @@ namespace App\Lib\Middleware;
 
 
 use App\Lib\Database\DBInterface;
+use App\Lib\Database\SqlsrvDB;
 use Config\AppConfig;
 
 class Repository
@@ -85,7 +86,7 @@ class Repository
             case "DELETE":
                 return join(' ', [
                     $operation,
-                    "FROM `$table`",
+                    "FROM $table",
                     self::WhereWrapper(self::ParamAdapter($where, 'all', " $where_delimiter ")),
                     self::ParamAdapter($params, 'all', " $params_delimiter ")
                 ]);
@@ -93,7 +94,7 @@ class Repository
             case "UPDATE":
             return join(' ', [
                 $operation,
-                "`$table`",
+                "$table",
                 "SET",
                 self::ParamAdapter($what),
                 self::WhereWrapper(self::ParamAdapter($where, 'all', " $where_delimiter ")),
@@ -103,8 +104,8 @@ class Repository
             case "SELECT":
                 return join(' ', [
                     $operation,
-                    self::ParamAdapter($what, 'data'),
-                    "FROM `$table`",
+                    self::SqlsrvParamAdapter($what,'data'),
+                    "FROM $table",
                     self::WhereWrapper(self::ParamAdapter($where, 'all', " $where_delimiter ")),
                     self::ParamAdapter($params, 'all', " $params_delimiter ")
                 ]);
@@ -112,7 +113,7 @@ class Repository
             case "INSERT":
                 return join(' ', [
                     $operation." INTO",
-                    "`$table`",
+                    "$table",
                     '('.self::ParamAdapter($what, 'keys').')',
                     'VALUES',
                     '('.self::ParamAdapter($what, 'data').')',
@@ -130,7 +131,7 @@ class Repository
         if (is_null($param)) return null;
         if (is_string($param)) return $param;
 
-        if (self::$statement) return self::StatementParamAdapter($param, $mode);
+        if (self::$statement) return self::StatementParamAdapter($param, $mode, $delimiter);
 
         switch ($mode)
         {
@@ -148,7 +149,7 @@ class Repository
     }
 
 
-    private static function StatementParamAdapter($param, $mode)
+    private static function StatementParamAdapter($param, $mode, $delimiter)
     {
         $res = null;
 
@@ -156,25 +157,35 @@ class Repository
         {
             switch ($mode)
             {
+                case 'sqlsrv_data':
+                    if (is_null($value))
+                    {
+                        $value = 'NULL';
+                        $res .= $value.$delimiter;
+                        break;
+                    }
+                    $res .= "[$value]$delimiter";
+                    break;
+
                 case 'data':
                     if (is_null($value))
                     {
                         $value = 'NULL';
-                        $res .= "$value,";
+                        $res .= $value.$delimiter;
                         break;
                     }
-                    $res .= "'$value',";
+                    $res .= "'$value'$delimiter";
                     break;
                 case 'keys':
-                    $res .= "`$key`,";
+                    $res .= $key.$delimiter;
                     break;
                 case 'all':
                     self::$params[] = $value;
-                    $res .= "`$key` = ?,";
+                    $res .= "$key = ?$delimiter";
                     break;
             }
         }
-        $res = trim($res, ',');
+        $res = trim($res, $delimiter);
         return $res;
     }
 
@@ -183,5 +194,12 @@ class Repository
     {
         if (!is_null($res)) $res = "WHERE $res";
         return $res;
+    }
+
+
+    private static function SqlsrvParamAdapter($param, $mode = 'all')
+    {
+        if (AppConfig::REPOSITORY_DB_CLASS == SqlsrvDB::class) return self::ParamAdapter($param, 'sqlsrv_'.$mode);
+        return self::ParamAdapter($param, 'data');
     }
 }

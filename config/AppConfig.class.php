@@ -18,10 +18,10 @@ class AppConfig
 
 
     //Database
-    const DBHOST    = '';
-    const DBLOGIN   = '';
-    const DBPASS    = '';
-    const DBNAME    = '';
+    const DBHOST    = '127.0.0.1';
+    const DBNAME    = 'cinemabase';
+    const DBLOGIN   = 'root';
+    const DBPASS    = 'root';
     const DBCHARSET = 'utf8';
 
     const REPOSITORY_DB_CLASS       = PdoDB::class;
@@ -29,10 +29,22 @@ class AppConfig
 
 
     //Files
+    //Relative path to /public
+    const PUBLIC_DIR    = DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR;
     //Relative path to /view
-    const VIEW_DIR = DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR;
+    const VIEW_DIR      = DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR;
     //Relative path to /logs
-    const LOGS_DIR = DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR;
+    const LOGS_DIR      = DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR;
+
+
+    //Allowed file upload types
+    const UPLOAD_TYPES  = [
+        'image/png',
+        'image/jpeg',
+        'image/gif',
+        'image/webp',
+        'image/img'
+    ];
 
 
     //Routing

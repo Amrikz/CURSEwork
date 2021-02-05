@@ -4,137 +4,148 @@
 namespace App\Jobs\Auth;
 
 
-use App\Lib\Logging\StatusInterface;
 use App\Models\Users;
 use App\Lib\Logging\Status;
 
-class Auth implements StatusInterface
+class Auth 
 {
-    public $status;
+    public static $status;
 
 
-    public function __construct()
+    public static function Initialize()
     {
-        $this->status = new Status([
+        self::$status = new Status([
             "status"    => null,
             "message"   => null,
             "required"  => null
         ]);
 
-        $this->status->SwitcherRegister('-1', 'message', '');
-        $this->status->SwitcherRegister('-1', 'status', false);
+        self::$status->SwitcherRegister('-1', 'message', '');
+        self::$status->SwitcherRegister('-1', 'status', false);
 
 
-        $this->status->SwitcherRegister('0','message','Вы успешно авторизировались!');
-        $this->status->SwitcherRegister('0','status',true);
+        self::$status->SwitcherRegister('0','message','Вы успешно авторизировались!');
+        self::$status->SwitcherRegister('0','status',true);
 
-        $this->status->SwitcherRegister('1','message',"Комбинация логин|пароль не найдены");
-        $this->status->SwitcherRegister('1','status',false);
+        self::$status->SwitcherRegister('1','message',"Комбинация логин|пароль не найдены");
+        self::$status->SwitcherRegister('1','status',false);
 
-        $this->status->SwitcherRegister('2','message',"Пользователь с таким именем уже существует");
-        $this->status->SwitcherRegister('2','status',false);
+        self::$status->SwitcherRegister('2','message',"Пользователь с таким именем уже существует");
+        self::$status->SwitcherRegister('2','status',false);
 
-        $this->status->SwitcherRegister('3','message',"Пароли не совпадают");
-        $this->status->SwitcherRegister('3','status',false);
+        self::$status->SwitcherRegister('3','message',"Пароли не совпадают");
+        self::$status->SwitcherRegister('3','status',false);
 
-        $this->status->SwitcherRegister('4','message',"Успешно зарегистрировано!");
-        $this->status->SwitcherRegister('4','status',true);
+        self::$status->SwitcherRegister('4','message',"Успешно зарегистрировано!");
+        self::$status->SwitcherRegister('4','status',true);
     }
 
 
-    private function NullifyStatus()
+    private static function NullifyStatus()
     {
-        $this->status->Nullify();
+        if (!self::$status) self::Initialize();
+        self::$status->Nullify();
     }
 
 
-    public function GetArrStatus()
+    public static function GetArrStatus()
     {
-        return $this->status->GetArrStatus();
+        if (!self::$status) self::Initialize();
+        return self::$status->GetArrStatus();
     }
 
 
-    public function GetJsonStatus()
+    public static function GetJsonStatus()
     {
-        return $this->status->GetJsonStatus();
+        if (!self::$status) self::Initialize();
+        return self::$status->GetJsonStatus();
     }
 
 
-    public function Login($login,$password)
+    public static function Login($login,$password)
 	{
-		$this->NullifyStatus();
+		self::NullifyStatus();
 
 		if ($login && $password)
 		{
-		    $user = Users::GetByLogin($login);
-            $password = password_verify($password, $user['password']);
+		    $user = Users::FindBy(Users::$login_name, $login)[0];
+            $password = password_verify($password, trim($user['password']));
             if ($password && $user['id'])
             {
-                $this->status->StatusSwitch(0);
+                self::$status->StatusSwitch(0);
 
-                $user = array([
-                    'id'    => $user['id'],
-                    'login' => $user['login'],
-                    'role'  => $user['role']
-                ]);
-                return $user;
+                $user = array(
+                    'id'        => $user['id'],
+                    'login'     => $user['login'],
+                    'role_id'   => $user['role_id']
+                );
+                $_SESSION['user'] = $user;
+                return true;
             }
             else
             {
-                $this->status->StatusSwitch(1);
+                self::$status->StatusSwitch(1);
                 return false;
             }
         }
 		else
         {
-            if (!$login)    $this->status->AddValue("required",'Введите логин');
-            if (!$password) $this->status->AddValue("required",'Введите пароль');
-            $this->status->SetValue("status",false);
+            if (!$login)    self::$status->AddValue("required",'Введите логин');
+            if (!$password) self::$status->AddValue("required",'Введите пароль');
+            self::$status->SetValue("status",false);
 
             return false;
         }
     }
 
 
-    public function Register($login, $password, $confirm_password)
+    public static function Register($login, $password, $confirm_password, $stateless = false)
     {
-        $this->NullifyStatus();
+        self::NullifyStatus();
 
         if ($login && $password && $confirm_password)
         {
             if ($password == $confirm_password)
             {
-                $user = Users::GetByLogin($login);
+                $user = Users::FindBy(Users::$login_name, $login)[0];
                 if ($user['id'])
                 {
-                    $this->status->StatusSwitch(2);
+                    self::$status->StatusSwitch(2);
                     return false;
                 }
 
-                $password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 7]);
+                $password = trim(password_hash($password, PASSWORD_BCRYPT));
 
                 if (Users::RegisterInsert($login, $password) == 1)
                 {
-                    $this->status->StatusSwitch(4);
-                    $_SESSION['user']['id']     = $user['id'];
-                    $_SESSION['user']['login']  = $user['login'];
-                    $_SESSION['user']['role']   = $user['role'];
+                    self::$status->StatusSwitch(4);
+
+                    if (!$stateless)
+                    {
+                        $db_user = Users::FindBy(Users::$login_name, $login)[0];
+                        $user = array(
+                            'id'        => $db_user['id'],
+                            'login'     => $db_user['login'],
+                            'role_id'   => $db_user['role_id']
+                        );
+                        $_SESSION['user'] = $user;
+                    }
                     return true;
                 }
                 return false;
             }
             else
             {
-                $this->status->StatusSwitch(3);
+                self::$status->StatusSwitch(3);
                 return false;
             }
 		}
 		else
         {
-            if (!$login)            $this->status->AddValue("required",'Введите логин');
-            if (!$password)         $this->status->AddValue("required",'Введите пароль');
-            if (!$confirm_password) $this->status->AddValue("required",'Введите подтверждение пароля');
-            $this->status->SetValue("status",false);
+            if (!$login)            self::$status->AddValue("required",'Введите логин');
+            if (!$password)         self::$status->AddValue("required",'Введите пароль');
+            if (!$confirm_password) self::$status->AddValue("required",'Введите подтверждение пароля');
+            self::$status->SetValue("status",false);
             return false;
         }
 	}

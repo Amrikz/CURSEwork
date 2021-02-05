@@ -6,7 +6,7 @@ namespace App\Controllers;
 
 use App\Lib\File\View;
 
-class HomeController extends AbstractController
+class HomeController extends BaseController
 {
     public function index()
     {

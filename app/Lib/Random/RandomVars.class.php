@@ -13,4 +13,11 @@ class RandomVars
         $num = rand(0, $upper_limit);
         return $arr[$num];
     }
+
+
+    public static function Str($length)
+    {
+        $res = substr(str_shuffle(MD5(microtime())), 0, $length);
+        return $res;
+    }
 }

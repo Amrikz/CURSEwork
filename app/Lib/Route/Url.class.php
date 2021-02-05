@@ -92,7 +92,9 @@ class Url
 
 
     public static function getUrlAddition() {
-        return str_replace($_GET['url'],'', $_SERVER['REQUEST_URI']);
+        $res = str_replace($_GET['url'],'', $_SERVER['REDIRECT_URL']);
+        if (!$res) $res = '/';
+        return $res;
     }
 
 

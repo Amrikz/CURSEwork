@@ -1,8 +1,10 @@
 <?php
 
+use App\Controllers\HomeController;
+use App\Controllers\AdminController;
 use App\Lib\Route\Route;
 
 
-Route::get('',App\Controllers\HomeController::class,'index');
-Route::get('test',App\Controllers\HomeController::class,'test');
-Route::get('test/*/~',App\Controllers\HomeController::class,'test');
+Route::get('',HomeController::class,'index');
+
+Route::get('admin',AdminController::class,'admin');

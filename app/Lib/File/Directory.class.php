@@ -32,4 +32,20 @@ class Directory
         }
         return rmdir($dir_path);
     }
+
+
+    public static function AllInDirectory($dir_path)
+    {
+        if ($handle = opendir($dir_path))
+        {
+            $res = null;
+            while (false !== ($entry = readdir($handle)))
+            {
+                $res[] = $entry;
+            }
+            closedir($handle);
+            return $res;
+        }
+        return false;
+    }
 }

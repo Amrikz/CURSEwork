@@ -53,6 +53,6 @@ class ErrorHandler
 
     private static function Log_string($errno, $errstr, $errfile, $errline)
     {
-        return join(" ", [strerror($errno), $errstr, $errfile, $errline]);
+        return join(" ", [strerror($errno).':', "'$errstr'", 'in', $errfile, $errline]);
     }
 }

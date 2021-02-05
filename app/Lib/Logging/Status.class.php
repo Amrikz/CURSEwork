@@ -4,7 +4,7 @@
 namespace App\Lib\Logging;
 
 
-class Status implements StatusInterface
+class Status
 {
     public $status;
 
@@ -22,13 +22,14 @@ class Status implements StatusInterface
 
     public function Nullify($complete = false)
     {
-        if ($complete) $this->status = array();
+        if ($complete) $this->status = null;
         else
         {
-            foreach ($this->status as $key => $value)
-            {
-                $this->status[$key] = null;
-            }
+            $this->status = array([
+                "status"    => null,
+                "message"   => null,
+                "required"  => null
+            ]);
         }
     }
 
@@ -49,6 +50,12 @@ class Status implements StatusInterface
     {
         if ($this->status[$id]) $this->status[$id] .= $delimiter.$value;
         $this->status[$id] = $value;
+    }
+
+
+    public function AddArrValue($id, $value)
+    {
+        $this->status[$id][] = $value;
     }
 
 
@@ -105,5 +112,29 @@ class Status implements StatusInterface
             }
         if ($ok == true) return true;
         return false;
+    }
+
+
+    /**
+     * Checks every status in $statuses array and return only statuses with [status = false]
+     * @param $statuses
+     * @return array
+     */
+    public static function StatusCheck($statuses)
+    {
+        foreach ($statuses as $key=>$value)
+        {
+            if ($statuses[$key]['status'] == false) $res[] = $statuses[$key];
+        }
+        return $res;
+    }
+
+
+    public static function NewError($message)
+    {
+        $status = new self();
+        $status->SetValue('status', false);
+        $status->SetValue('message', $message);
+        return $status;
     }
 }
