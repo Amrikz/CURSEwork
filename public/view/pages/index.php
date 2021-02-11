@@ -24,7 +24,7 @@ $params['scripts']  = [
 $params['style']    = [
 ];
 
-View::ViewDir('blocks'.DIRECTORY_SEPARATOR.'head.php');
+View::ViewDir(join(DIRECTORY_SEPARATOR, ['blocks','lib','head.php']));
 ?>
 
 <body>
@@ -37,4 +37,4 @@ View::ViewDir('blocks'.DIRECTORY_SEPARATOR.'head.php');
 </body>
 
 <?php
-View::ViewDir('blocks'.DIRECTORY_SEPARATOR.'footer.php');
+View::ViewDir(join(DIRECTORY_SEPARATOR, ['blocks','lib','footer.php']));

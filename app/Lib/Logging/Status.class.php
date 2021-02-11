@@ -25,11 +25,11 @@ class Status
         if ($complete) $this->status = null;
         else
         {
-            $this->status = array([
+            $this->status = array(
                 "status"    => null,
                 "message"   => null,
                 "required"  => null
-            ]);
+            );
         }
     }
 
