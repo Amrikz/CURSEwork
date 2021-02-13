@@ -36,6 +36,7 @@ abstract class BaseController
         {
             session_unset();
             session_destroy();
+            header('Location: '.Url::getUrlAddition());
         }
     }
 }

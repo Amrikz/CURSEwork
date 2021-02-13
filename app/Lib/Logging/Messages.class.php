@@ -25,6 +25,7 @@ class Messages
                 foreach ($value as $message)
                 {
                     if ($key == "statuses") $res[] = $message;
+                    elseif ($key == "messages") $res[] = Status::NewResponse($message)->status;
                     else $res[] = Status::NewError($message)->status;
                 }
             }
@@ -41,5 +42,11 @@ class Messages
     public static function Error($message)
     {
         self::$messages['errors'][] = $message;
+    }
+
+
+    public static function Message($message)
+    {
+        self::$messages['messages'][] = $message;
     }
 }

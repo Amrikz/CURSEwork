@@ -115,25 +115,19 @@ class Status
     }
 
 
-    /**
-     * Checks every status in $statuses array and return only statuses with [status = false]
-     * @param $statuses
-     * @return array
-     */
-    public static function StatusCheck($statuses)
-    {
-        foreach ($statuses as $key=>$value)
-        {
-            if ($statuses[$key]['status'] == false) $res[] = $statuses[$key];
-        }
-        return $res;
-    }
-
-
     public static function NewError($message)
     {
         $status = new self();
         $status->SetValue('status', false);
+        $status->SetValue('message', $message);
+        return $status;
+    }
+
+
+    public static function NewResponse($message)
+    {
+        $status = new self();
+        $status->SetValue('status', true);
         $status->SetValue('message', $message);
         return $status;
     }

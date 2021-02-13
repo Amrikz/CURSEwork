@@ -32,7 +32,7 @@ class AppConfig
     //Relative path to /public
     const PUBLIC_DIR    = DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR;
     //Relative path to /view
-    const VIEW_DIR      = DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR;
+    const VIEW_DIR      = self::PUBLIC_DIR.'view'.DIRECTORY_SEPARATOR;
     //Relative path to /logs
     const LOGS_DIR      = DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR;
 

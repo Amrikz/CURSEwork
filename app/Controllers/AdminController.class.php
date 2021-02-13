@@ -28,7 +28,7 @@ class AdminController extends BaseController
     }
 
 
-    public function admin()
+    public function index()
     {
 
     }

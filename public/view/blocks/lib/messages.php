@@ -3,21 +3,37 @@
 
 use App\Jobs\Auth\Auth;
 use App\Lib\Logging\Messages;
-use App\Lib\Logging\Status;
 
 $messages = Messages::GetAsStatus();
 $messages[] = Auth::GetArrStatus();
 
-$errors = Status::StatusCheck($messages);
-
-foreach ($errors as $error)
+foreach ($messages as $message)
 {
-    if ($error['status'] !== null)
+    if ($message['status'] !== null)
     {
-        if ($error['required']) $message = "Required: ".$error['required'];
-        else $message = $error['message'];
-        ?>
-        <div style='
+        if ($message['status'] === true)
+        {
+            $message = $message['message'];
+            ?>
+            <div style='
+        font-size: large;
+        background: forestgreen;
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        max-width: 1170px;
+        margin: 10px auto;
+    '>
+                <?=$message?>
+            </div>
+            <?php
+        }
+        elseif ($message['status'] == false)
+        {
+            if ($message['required']) $message = "Required: ".$message['required'];
+            else $message = $message['message'];
+            ?>
+            <div style='
         font-size: large;
         background: red;
         color: #ffffff;
@@ -26,8 +42,9 @@ foreach ($errors as $error)
         max-width: 1170px;
         margin: 10px auto;
     '>
-            <?=$message?>
-        </div>
-        <?php
+                <?=$message?>
+            </div>
+            <?php
+        }
     }
 }
