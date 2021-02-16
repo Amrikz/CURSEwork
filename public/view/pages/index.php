@@ -1,8 +1,6 @@
 <?php
 
-use App\Lib\File\View;
 use App\Lib\Random\RandomVars;
-
 
 $phrases = [
     "Ну и название...",
@@ -11,20 +9,6 @@ $phrases = [
     "???",
     "PROFIT!",
 ];
-
-
-$params =& $GLOBALS['head_params'];
-
-$params['title']    = "Index";
-$params['links']    = [
-    "<link rel='stylesheet' href='/public/css/welcome.css'>",
-];
-$params['scripts']  = [
-];
-$params['style']    = [
-];
-
-View::ViewDir(join(DIRECTORY_SEPARATOR, ['blocks','lib','head.php']));
 ?>
 
 <body>
@@ -35,6 +19,3 @@ View::ViewDir(join(DIRECTORY_SEPARATOR, ['blocks','lib','head.php']));
         <p id="phrase"><?php echo RandomVars::StrFromArr($phrases) ?></p>
     </section>
 </body>
-
-<?php
-View::ViewDir(join(DIRECTORY_SEPARATOR, ['blocks','lib','footer.php']));
