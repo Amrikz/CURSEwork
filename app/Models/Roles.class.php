@@ -4,8 +4,7 @@
 namespace App\Models;
 
 
-
-class Role extends BaseModel
+class Roles extends BaseModel
 {
     public static $table_name       = 'roles';
 
@@ -15,23 +14,14 @@ class Role extends BaseModel
 
     public static $fillable_fields;
 
+    public static $admin_power_level= 2;
 
-    public static function Put($arr)
+
+    protected static function fillable_init($arr = null, $complete = false)
     {
-        self::$fillable_fields = [
+        parent::fillable_init(self::$fillable_fields = [
             self::$name_name,
-            self::$level_name
-        ];
-        return parent::Put($arr);
-    }
-
-
-    public static function UpdateByID($id, $arr)
-    {
-        self::$fillable_fields = [
-            self::$name_name,
-            self::$level_name
-        ];
-        return parent::UpdateByID($id, $arr);
+            self::$level_name,
+        ]);
     }
 }

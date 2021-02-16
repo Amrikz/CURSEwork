@@ -7,4 +7,4 @@ use App\Lib\Route\Route;
 
 Route::get('',HomeController::class,'index');
 
-Route::get('admin',AdminController::class,'admin');
+Route::get('admin',AdminController::class,'index');

@@ -19,7 +19,7 @@ class AppConfig
 
     //Database
     const DBHOST    = '127.0.0.1';
-    const DBNAME    = 'cinemabase';
+    const DBNAME    = '';
     const DBLOGIN   = 'root';
     const DBPASS    = 'root';
     const DBCHARSET = 'utf8';
@@ -44,6 +44,12 @@ class AppConfig
         'image/gif',
         'image/webp',
         'image/img'
+    ];
+
+
+    //Escaped chars
+    const ESCAPED_CHARS = [
+        "'",'"'
     ];
 
 

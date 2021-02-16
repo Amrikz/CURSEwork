@@ -17,6 +17,16 @@ class Users extends BaseModel
     public static $fillable_fields;
 
 
+    protected static function fillable_init($arr = null, $complete = false)
+    {
+        parent::fillable_init([
+            self::$login_name,
+            self::$password_name,
+            self::$role_id_name
+        ]);
+    }
+
+
     public static function RegisterInsert($login, $password)
     {
         $what = [
@@ -25,16 +35,5 @@ class Users extends BaseModel
             self::$role_id_name     => 1,
         ];
         return parent::Insert($what);
-    }
-
-
-    public static function UpdateByID($id, $arr)
-    {
-        self::$fillable_fields = [
-            self::$login_name,
-            self::$password_name,
-            self::$role_id_name
-        ];
-        return parent::UpdateByID($id, $arr);
     }
 }

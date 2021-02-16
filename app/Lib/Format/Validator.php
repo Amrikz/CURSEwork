@@ -58,6 +58,8 @@ class Validator
                         }
                         break;
 
+                    case 'numeric':
+                    case 'integer':
                     case 'int':
                         if ($params[$id])
                         {

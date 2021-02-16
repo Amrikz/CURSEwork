@@ -16,6 +16,7 @@ Url::addPrefixToHref($params['scripts'], 'src=');
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <base href="<?=Url::getUrlAddition()?>">
 
         <title><?php echo $params['title'] ? $params['title'] : "CURSEWORK"?></title>
 

@@ -9,9 +9,9 @@ class Directory
     public $path;
 
 
-    public function __construct($dir_path)
+    public function __construct($dir_path, $absolute = false)
     {
-        $this->path = PROJECT_DIR.$dir_path;
+        if (!$absolute) $this->path = PROJECT_DIR.$dir_path;
         return $this->CreateCheck($this->path);
     }
 

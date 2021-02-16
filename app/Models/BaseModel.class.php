@@ -15,6 +15,13 @@ abstract class BaseModel implements ModelInterface
     public static $fillable_fields  = [];
 
 
+    protected static function fillable_init($arr = null, $complete = false)
+    {
+        if (!self::$fillable_fields || $complete)
+            self::$fillable_fields = $arr;
+    }
+
+
     public static function Select($what, $where = null, $params = null)
     {
         return Repository::Select($what, static::$table_name, $where, $params);
@@ -36,20 +43,20 @@ abstract class BaseModel implements ModelInterface
     }
 
 
-    public static function FindBy($param, $value)
+    public static function FindBy($param, $value, $params = null)
     {
         $param .= "_name";
         $where = [
             static::$$param => $value
         ];
 
-        return self::Select('*', $where);
+        return self::Select('*', $where, $params);
     }
 
 
-    public static function GetAll()
+    public static function GetAll($params = null)
     {
-        return self::Select('*');
+        return self::Select('*', null, $params);
     }
 
 
@@ -76,6 +83,7 @@ abstract class BaseModel implements ModelInterface
 
     public static function UpdateByID($id, $arr)
     {
+        if (!static::$fillable_fields) static::fillable_init();
         foreach (static::$fillable_fields as $key=>$field)
         {
             if ($arr[$field]) $what[$field] = $arr[$field];

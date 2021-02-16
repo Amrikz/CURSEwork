@@ -54,15 +54,47 @@ class File
     }
 
 
+    public function Rename($new_path)
+    {
+        $name       = Filename::NameExt($new_path);
+        $new_path   = Filename::Absolute($new_path);
+
+        if ($this->path == $new_path) return false;
+
+        if (in_array($name, Directory::AllInDirectory(Filename::PathWithoutName($new_path))))
+        {
+            ErrProcessor::MakeError('Error in upload. File with this name exist');
+            return false;
+        }
+        if (rename($this->path,$new_path))
+        {
+            $this->Delete();
+            $this->Open($new_path);
+        }
+        return true;
+    }
+
+
+    //STATIC//
+
+
     public static function Create($path)
     {
         return fopen(PROJECT_DIR.$path,'a+b');
     }
 
 
-    public static function Upload($path, $filename, $files_arr = null)
+    /**
+     * Upload all given files to server.
+     * Tip: $files_arr = [$filename => [$file]]
+     *
+     * @param $abs_path
+     * @param array $files_arr
+     * @param bool $create_dir
+     * @return bool
+     */
+    public static function Upload($abs_path, array $files_arr, $create_dir = false)
     {
-        if (!$files_arr) $files_arr = $_FILES;
         foreach ($files_arr as $key => $value)
         {
             if (!$value["tmp_name"])
@@ -73,9 +105,11 @@ class File
 
             if (in_array($value['type'], AppConfig::UPLOAD_TYPES))
             {
-                $filepath = $path.DIRECTORY_SEPARATOR.$filename;
+                if ($create_dir) new Directory($abs_path, true);
 
-                if (in_array($filepath, Directory::AllInDirectory($path)))
+                $filepath = $abs_path.DIRECTORY_SEPARATOR.$key.'.'.Filename::Extension($value['name']);
+
+                if (in_array($filepath, Directory::AllInDirectory($abs_path)))
                 {
                     ErrProcessor::MakeError('Error in upload. File with this name exist');
                     return false;

@@ -42,11 +42,13 @@ class Messages
     public static function Error($message)
     {
         self::$messages['errors'][] = $message;
+        Logger::Error(__METHOD__, $message);
     }
 
 
     public static function Message($message)
     {
         self::$messages['messages'][] = $message;
+        Logger::Info(__METHOD__, $message);
     }
 }

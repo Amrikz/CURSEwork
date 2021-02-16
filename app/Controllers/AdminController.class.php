@@ -4,9 +4,8 @@
 namespace App\Controllers;
 
 
-
 use App\Lib\Route\Url;
-use App\Models\Role;
+use App\Models\Roles;
 use App\Models\Users;
 
 class AdminController extends BaseController
@@ -20,8 +19,8 @@ class AdminController extends BaseController
         else
         {
             $user = Users::GetByID($_SESSION['user']['id']);
-            $role = Role::GetByID($user['role_id']);
-            if (!$role || $role['power'] < 3) header('Location: '.Url::getUrlAddition());
+            $role = Roles::GetByID($user['role_id']);
+            if (!$role || $role['power'] < Roles::$admin_power_level) header('Location: '.Url::getUrlAddition());
         }
 
         parent::__construct();
