@@ -19,7 +19,7 @@ class AppConfig
 
     //Database
     const DBHOST    = '127.0.0.1';
-    const DBNAME    = '';
+    const DBNAME    = 'cursework';
     const DBLOGIN   = 'root';
     const DBPASS    = 'root';
     const DBCHARSET = 'utf8';
