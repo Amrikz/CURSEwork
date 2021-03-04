@@ -32,7 +32,8 @@ class Route
             if(method_exists($controller, $actionName))
             {
                 Logger::Info(__METHOD__, "$controllerName->$actionName");
-                $controller->$actionName($parameters, ...$args);
+                if (!$parameters) $controller->$actionName(...$args);
+                else $controller->$actionName($parameters, ...$args);
                 die;
             }
             else

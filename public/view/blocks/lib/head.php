@@ -4,8 +4,6 @@ use App\Lib\Route\Url;
 use Config\AppConfig;
 
 $params = $GLOBALS['head_params'];
-Url::addPrefixToHref($params['links']);
-Url::addPrefixToHref($params['scripts'], 'src=');
 ?>
 
 

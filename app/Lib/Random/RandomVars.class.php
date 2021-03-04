@@ -17,7 +17,16 @@ class RandomVars
 
     public static function Str($length)
     {
-        $res = substr(str_shuffle(MD5(microtime())), 0, $length);
+        $multiplier = 1;
+        if ($length > 32) $multiplier = ceil($length/32);
+
+        if ($multiplier > 1)
+            for ($i = 0; $i != $multiplier; $i++)
+            {
+                $hash .= MD5(microtime());
+            }
+
+        $res = substr(str_shuffle($hash), 0, $length);
         return $res;
     }
 }

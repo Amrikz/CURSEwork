@@ -20,6 +20,7 @@ class Logger
         self::$logfile->Put("$str \n");
     }
 
+
     private static function Log_gate($type, $classname, $message, $important)
     {
         self::Log($type, $classname, $message, $important);

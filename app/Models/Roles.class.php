@@ -19,7 +19,7 @@ class Roles extends BaseModel
 
     protected static function fillable_init($arr = null, $complete = false)
     {
-        parent::fillable_init(self::$fillable_fields = [
+        parent::fillable_init([
             self::$name_name,
             self::$level_name,
         ]);

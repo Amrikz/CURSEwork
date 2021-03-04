@@ -66,3 +66,9 @@ function forEachEcho($arr)
 
     return true;
 }
+
+
+function url_addition()
+{
+    return Url::getUrlAddition();
+}

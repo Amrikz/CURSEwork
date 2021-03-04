@@ -17,8 +17,24 @@ abstract class BaseModel implements ModelInterface
 
     protected static function fillable_init($arr = null, $complete = false)
     {
-        if (!self::$fillable_fields || $complete)
-            self::$fillable_fields = $arr;
+        if (!$arr || $complete)
+            static::$fillable_fields = null;
+        else
+            static::$fillable_fields = $arr;
+    }
+
+
+    private static function _initialize_params($arr): array
+    {
+        $what = null;
+
+        if (!static::$fillable_fields) static::fillable_init();
+        foreach (static::$fillable_fields as $key=>$field)
+        {
+            if ($arr[$field]) $what[$field] = $arr[$field];
+        }
+
+        return $what;
     }
 
 
@@ -72,10 +88,7 @@ abstract class BaseModel implements ModelInterface
 
     public static function Put($arr)
     {
-        foreach (static::$fillable_fields as $key=>$field)
-        {
-            if ($arr[$field]) $what[$field] = $arr[$field];
-        }
+        $what = self::_initialize_params($arr);
 
         return self::Insert($what);
     }
@@ -83,11 +96,7 @@ abstract class BaseModel implements ModelInterface
 
     public static function UpdateByID($id, $arr)
     {
-        if (!static::$fillable_fields) static::fillable_init();
-        foreach (static::$fillable_fields as $key=>$field)
-        {
-            if ($arr[$field]) $what[$field] = $arr[$field];
-        }
+        $what = self::_initialize_params($arr);
 
         $where = [
             static::$id_name => $id
