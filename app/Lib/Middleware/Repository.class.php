@@ -16,6 +16,17 @@ class Repository
     private static $params;
     private static $statement = AppConfig::REPOSITORY_STATEMENT_MODE;
 
+    /**
+     * @param $sql
+     * @param null|array $params
+     * @return mixed
+     */
+    public static function Raw($sql, $params = null)
+    {
+        self::$params = $params;
+        return self::QueryBasis($sql);
+    }
+
 
     public static function Select($what, $table, $where = null, $params = null)
     {
@@ -50,20 +61,26 @@ class Repository
     }
 
 
-    private static function QueryPerformer($operation, $what, $table, $where = null, $params = null)
+    private static function QueryBasis($sql)
     {
         self::GetConn();
         $db =& self::$db_class;
-        self::$params = null;
         if (self::$statement)
         {
-            $db->StmtPrepare(self::SqlBuilder($operation, $what, $table, $where, $params));
+            $db->StmtPrepare($sql);
             $db->StmtExecute(self::$params);
         }
-        else $db->Query(self::SqlBuilder($operation, $what, $table, $where, $params));
+        else $db->Query($sql);
         $res = $db->Fetch();
         if (!$res) $res = $db->AffectedRows();
+        self::$params = null;
         return $res;
+    }
+
+
+    private static function QueryPerformer($operation, $what, $table, $where = null, $params = null)
+    {
+        return self::QueryBasis(self::SqlBuilder($operation, $what, $table, $where, $params));
     }
 
 
@@ -73,7 +90,6 @@ class Repository
         if (is_null(self::$connection))
         {
             self::$connection = self::$db_class::GetConn();
-            return self::$connection;
         }
         return self::$connection;
     }

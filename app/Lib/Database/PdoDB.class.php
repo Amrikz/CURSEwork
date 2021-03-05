@@ -65,7 +65,7 @@ class PdoDB implements DBInterface
     public function Fetch($dbh = null)
     {
         if (!self::$conn || (!$this->res && !$dbh)) {
-            return makeError("Nothing to Fetch!");
+            makeError("Nothing to Fetch!");
         }
         if (is_null($dbh)) $dbh = $this->res;
         return $dbh->fetchall();
@@ -86,7 +86,7 @@ class PdoDB implements DBInterface
     public function StmtExecute($params)
     {
         if (!self::$conn || !$this->stmt) {
-            return makeError("Nothing to Execute!");
+            makeError("Nothing to Execute!");
         }
 
         if ($params) Logger::Info(__METHOD__, "Params: ".arrayDataToStr($params));
