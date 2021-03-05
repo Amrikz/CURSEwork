@@ -1,6 +1,5 @@
 <?php
 
-use App\Lib\Route\Url;
 
 $params = $GLOBALS['foot_params'];
 
