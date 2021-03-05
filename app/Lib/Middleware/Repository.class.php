@@ -54,7 +54,7 @@ class Repository
 
     public static function Initialize($db_class)
     {
-        if (!((new $db_class) instanceof DBInterface)) return makeError("Class $db_class is not instance of DBInterface");
+        if (!((new $db_class) instanceof DBInterface)) makeError("Class $db_class is not instance of DBInterface");
 
         self::$db_class = new $db_class;
         return self::GetConn();
