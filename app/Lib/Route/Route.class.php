@@ -4,8 +4,8 @@
 namespace App\Lib\Route;
 
 
-use App\Lib\Errors\ErrProcessor;
 use App\Lib\Logging\Logger;
+use App\Lib\Request\Response;
 
 class Route
 {
@@ -32,13 +32,14 @@ class Route
             if(method_exists($controller, $actionName))
             {
                 Logger::Info(__METHOD__, "$controllerName->$actionName");
-                if (!$parameters) $controller->$actionName(...$args);
-                else $controller->$actionName($parameters, ...$args);
+                if (!$parameters) $response = $controller->$actionName(...$args);
+                else $response =  $controller->$actionName($parameters, ...$args);
+                Response::Json($response);
                 die;
             }
             else
             {
-                ErrProcessor::MakeError("Method '$controllerName->$actionName' not found");
+                makeError("Method '$controllerName->$actionName' not found");
                 die;
             }
         }

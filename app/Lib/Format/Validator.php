@@ -87,8 +87,8 @@ class Validator
     public function Status()
     {
         $status = $this->status->GetArrStatus();
-        $this->status->SetValue('required', arrayDataToStr($status['required'], ' | '));
-        $this->status->SetValue('message', arrayDataToStr($status['message'], ' | '));
+        $this->status->SetValue('required', $status['required']);
+        $this->status->SetValue('message', $status['message']);
         return $this->status->GetArrStatus();
     }
 }
