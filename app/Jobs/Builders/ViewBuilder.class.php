@@ -19,9 +19,9 @@ class ViewBuilder
     {
         self::_BuildGate($title);
 
-        View::ViewDir(join(DIRECTORY_SEPARATOR, ['blocks','index','header.php']));
+        View::ViewDir(join(DIRECTORY_SEPARATOR, ['blocks','lib','head.php']));
         View::ViewDir(join(DIRECTORY_SEPARATOR, $path_arr));
-        View::ViewDir(join(DIRECTORY_SEPARATOR, ['blocks', 'index', 'foot.php']));
+        View::ViewDir(join(DIRECTORY_SEPARATOR, ['blocks', 'lib', 'foot.php']));
     }
 
 
