@@ -78,7 +78,5 @@ function url_addition()
 
 function request()
 {
-    $request = Request::get();
-    if (!$request) return $_POST;
-    return $request;
+    return Request::all();
 }

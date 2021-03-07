@@ -28,4 +28,18 @@ class Request
         self::_override($override_post);
         return self::$request;
     }
+
+
+    public static function all(): array
+    {
+        $request = self::get();
+        if (!$request) $request = $_POST;
+
+        foreach ($_GET as $key=>$value)
+        {
+            $request[$key] = $value;
+        }
+
+        return $request;
+    }
 }
