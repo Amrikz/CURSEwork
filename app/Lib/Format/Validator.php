@@ -80,6 +80,7 @@ class Validator
             return true;
         }
         $this->status->SetValue('status',false);
+        $this->status->SetValue('response_code',400);
         return false;
     }
 

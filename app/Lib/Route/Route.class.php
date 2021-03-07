@@ -4,9 +4,8 @@
 namespace App\Lib\Route;
 
 
+use App\Jobs\Auth\Auth;
 use App\Lib\Logging\Logger;
-use App\Lib\Request\Response;
-use Config\AppConfig;
 
 class Route
 {
@@ -20,6 +19,8 @@ class Route
         $url->setDestination($destination_url);
         if($url->compareUrl())
         {
+            $request = request();
+
             if (!self::_methodCheck($parameters['method'])) return false;
             $args = $url->getArgs();
             // TODO: Here needs to be Token check
@@ -27,9 +28,8 @@ class Route
             if(method_exists($controller, $actionName))
             {
                 Logger::Info(__METHOD__, "$controllerName->$actionName");
-                $response = $controller->$actionName(request(), ...$args);
-                $res_type = AppConfig::RESPONSE_TYPE;
-                Response::$res_type($response);
+                $response = $controller->$actionName($request, ...$args);
+                response($response);
                 die;
             }
             else

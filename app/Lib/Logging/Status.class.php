@@ -26,9 +26,10 @@ class Status
         else
         {
             $this->status = array(
-                "status"    => null,
-                "message"   => null,
-                "required"  => null
+                "status"            => null,
+                "message"           => null,
+                "required"          => null,
+                "response_code"   => 200
             );
         }
     }

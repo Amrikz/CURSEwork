@@ -3,7 +3,9 @@
 
 use App\Lib\Errors\ErrProcessor;
 use App\Lib\Request\Request;
+use App\Lib\Request\Response;
 use App\Lib\Route\Url;
+use Config\AppConfig;
 
 
 function strError($errno)
@@ -79,4 +81,12 @@ function url_addition()
 function request()
 {
     return Request::all();
+}
+
+
+function response($response)
+{
+    $res_type = AppConfig::RESPONSE_TYPE;
+    Response::$res_type($response);
+    die;
 }
