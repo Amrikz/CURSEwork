@@ -132,7 +132,7 @@ class Repository
                     "$table",
                     '('.self::ParamAdapter($what, 'keys').')',
                     'VALUES',
-                    '('.self::ParamAdapter($what, 'data').')',
+                    '('.self::ParamAdapter($what, 'stmt_data').')',
                     self::ParamAdapter($params, 'all', " $params_delimiter ")
                 ]);
 
@@ -191,6 +191,16 @@ class Repository
                         break;
                     }
                     $res .= "'$value'$delimiter";
+                    break;
+                case 'stmt_data':
+                    if (is_null($value))
+                    {
+                        $value = 'NULL';
+                        $res .= $value.$delimiter;
+                        break;
+                    }
+                    self::$params[] = $value;
+                    $res .= "?$delimiter";
                     break;
                 case 'keys':
                     $res .= $key.$delimiter;

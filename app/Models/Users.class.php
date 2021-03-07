@@ -17,8 +17,9 @@ class Users extends BaseModel
     public static $fillable_fields;
 
 
-    protected static function fillable_init($arr = null, $complete = false)
+    public static function __constructStatic()
     {
+        parent::params_init();
         parent::fillable_init([
             self::$login_name,
             self::$password_name,
@@ -27,13 +28,9 @@ class Users extends BaseModel
     }
 
 
-    public static function RegisterInsert($login, $password)
+    public static function RegisterInsert($what)
     {
-        $what = [
-            self::$login_name       => $login,
-            self::$password_name    => $password,
-            self::$role_id_name     => 1,
-        ];
-        return parent::Insert($what);
+        $what[self::$role_id_name] = 1;
+        return parent::Put($what);
     }
 }

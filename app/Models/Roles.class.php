@@ -17,8 +17,9 @@ class Roles extends BaseModel
     public static $admin_power_level= 2;
 
 
-    protected static function fillable_init($arr = null, $complete = false)
+    public static function __constructStatic()
     {
+        parent::params_init();
         parent::fillable_init([
             self::$name_name,
             self::$level_name,

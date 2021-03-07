@@ -4,6 +4,7 @@
 namespace App\Models;
 
 
+use App\Jobs\Auth\Auth;
 use App\Lib\Middleware\Repository;
 
 abstract class BaseModel implements ModelInterface
@@ -15,20 +16,37 @@ abstract class BaseModel implements ModelInterface
     public static $fillable_fields  = [];
 
 
+    protected static function params_init()
+    {
+        $vars = get_class_vars(static::class);
+        foreach ($vars as $key=>$var)
+        {
+            if (!$var && strpos($key,'_name'))
+            {
+                static::$$key = substr_replace($key,'',-5);
+            }
+        }
+        self::fillable_init();
+    }
+
+
     protected static function fillable_init($arr = null, $complete = false)
     {
         if (!$arr || $complete)
             static::$fillable_fields = null;
         else
-            static::$fillable_fields = $arr;
+            foreach ($arr as $key=>$value)
+            {
+                if (!is_array($value) || in_array(Auth::$role, explode(',', $key)))
+                    static::$fillable_fields[] = $value;
+            }
     }
 
 
-    private static function _initialize_params($arr): array
+    private static function _params_for_edit($arr = null)
     {
         $what = null;
 
-        if (!static::$fillable_fields) static::fillable_init();
         foreach (static::$fillable_fields as $key=>$field)
         {
             if ($arr[$field]) $what[$field] = $arr[$field];
@@ -88,7 +106,7 @@ abstract class BaseModel implements ModelInterface
 
     public static function Put($arr)
     {
-        $what = self::_initialize_params($arr);
+        $what = self::_params_for_edit($arr);
 
         return self::Insert($what);
     }
@@ -96,7 +114,7 @@ abstract class BaseModel implements ModelInterface
 
     public static function UpdateByID($id, $arr)
     {
-        $what = self::_initialize_params($arr);
+        $what = self::_params_for_edit($arr);
 
         $where = [
             static::$id_name => $id
