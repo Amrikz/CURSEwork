@@ -69,4 +69,13 @@ class AppConfig
         ".trait.php",
         ".interface.php"
     ];
+
+
+    //Request
+    const REQUEST_DEFAULT_OVERRIDE_POST = true;
+
+
+    //Response
+    const RESPONSE_TYPE = "JSON" /*"ARR"*/;
+
 }

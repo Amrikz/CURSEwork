@@ -2,6 +2,7 @@
 
 
 use App\Lib\Errors\ErrProcessor;
+use App\Lib\Request\Request;
 use App\Lib\Route\Url;
 
 
@@ -72,4 +73,12 @@ function forEachEcho($arr)
 function url_addition()
 {
     return Url::getUrlAddition();
+}
+
+
+function request()
+{
+    $request = Request::get();
+    if (!$request) return $_POST;
+    return $request;
 }

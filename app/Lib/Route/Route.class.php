@@ -6,6 +6,7 @@ namespace App\Lib\Route;
 
 use App\Lib\Logging\Logger;
 use App\Lib\Request\Response;
+use Config\AppConfig;
 
 class Route
 {
@@ -16,7 +17,7 @@ class Route
     {
         if (self::$_404 == 1)
         {
-            header("HTTP/1.0 404 Not Found", true, 404);
+            header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
         }
     }
 
@@ -34,7 +35,8 @@ class Route
                 Logger::Info(__METHOD__, "$controllerName->$actionName");
                 if (!$parameters) $response = $controller->$actionName(...$args);
                 else $response =  $controller->$actionName($parameters, ...$args);
-                Response::Json($response);
+                $res_type = AppConfig::RESPONSE_TYPE;
+                Response::$res_type($response);
                 die;
             }
             else

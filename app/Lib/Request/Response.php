@@ -6,10 +6,23 @@ namespace App\Lib\Request;
 
 class Response
 {
-    public static function Json($arr)
+    private static function _responseBody($response, $response_code)
     {
-        if ($arr)
-            echo json_encode($arr);
+        if (!headers_sent()) http_response_code($response_code);
+        if ($response)
+            echo ($response);
         die;
+    }
+
+
+    public static function Arr($arr, $response_code = 200)
+    {
+        self::_responseBody(var_export($arr,true),$response_code);
+    }
+
+
+    public static function Json($arr, $response_code = 200)
+    {
+        self::_responseBody(json_encode($arr),$response_code);
     }
 }
