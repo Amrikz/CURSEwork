@@ -34,7 +34,7 @@ class Auth
         self::$status->SwitcherRegister('1','status',false);
         self::$status->SwitcherRegister('1','response_code',400);
 
-        self::$status->SwitcherRegister('2','message',"Пользователь с такой почтой уже существует");
+        self::$status->SwitcherRegister('2','message',"Пользователь с таким логином уже существует");
         self::$status->SwitcherRegister('2','status',false);
         self::$status->SwitcherRegister('2','response_code',400);
 
@@ -102,7 +102,7 @@ class Auth
 	{
 		self::NullifyStatus();
 
-        $user = Users::FindBy(Users::$email_name, $request['email'])[0];
+        $user = Users::FindBy(Users::$login_name, $request['login'])[0];
         $request['password'] = password_verify($request['password'], trim($user['password']));
         if ($request['password'] && $user['id'])
         {
@@ -111,7 +111,7 @@ class Auth
             self::$user = $user;
             self::$role = $role;
 
-            $token = self::_generateToken($request['email']);
+            $token = self::_generateToken($request['login']);
             if (Users::UpdateByID($user['id'], [Users::$token_name => $token]))
             {
                 self::$status->StatusSwitch(0);
@@ -138,7 +138,7 @@ class Auth
 
         if ($request['password'] == $request['c_password'])
         {
-            $user = Users::FindBy(Users::$email_name, $request['email'])[0];
+            $user = Users::FindBy(Users::$login_name, $request['login'])[0];
             if ($user['id'])
             {
                 self::$status->StatusSwitch(2);
@@ -146,7 +146,7 @@ class Auth
             }
 
             $request['password']    = trim(password_hash($request['password'], PASSWORD_BCRYPT));
-            $request['token']       = self::_generateToken($request['email']);
+            $request['token']       = self::_generateToken($request['login']);
 
             if (Users::RegisterInsert($request) == 1)
             {
