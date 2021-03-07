@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Фев 17 2021 г., 18:49
+-- Время создания: Мар 07 2021 г., 22:43
 -- Версия сервера: 10.4.12-MariaDB
 -- Версия PHP: 7.4.5
 
@@ -55,12 +55,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `login` varchar(511) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(511) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(511) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `role_id` int(11) UNSIGNED NOT NULL DEFAULT 1,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `LOGIN` (`login`),
+  UNIQUE KEY `token` (`token`),
   KEY `role_id` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `users`
+--
+
+INSERT INTO `users` (`id`, `login`, `password`, `token`, `role_id`, `created_at`) VALUES
+(2, 'qwe', '$2y$10$upgF1rszopKbiZXYY16RdODfvwu2.6HehEV/R7iRcnxpztxekCx02', NULL, 1, '2021-03-06 15:39:41');
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
