@@ -9,7 +9,7 @@ class Response
     private static function _responseBody($response, $response_code)
     {
         if (!headers_sent()) http_response_code($response_code);
-        if ($response)
+        if (!isset($response) && $response)
             echo ($response);
         die;
     }
