@@ -56,6 +56,8 @@ class Autoload
                     if (file_exists($finPath))
                     {
                         require_once $finPath;
+                        if (method_exists($className,'__constructStatic'))
+                            $className::__constructStatic();
                         Logger::Info(__CLASS__,"Class '{$className}' Loaded");
                         return;
                     }
