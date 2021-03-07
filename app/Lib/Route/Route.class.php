@@ -22,8 +22,10 @@ class Route
             $request = request();
 
             if (!self::_methodCheck($parameters['method'])) return false;
+            if ($parameters['auth'])
+                if (!Auth::TokenCheck($request['token'], $parameters['auth'])) response(Auth::GetArrStatus());
+
             $args = $url->getArgs();
-            // TODO: Here needs to be Token check
             $controller = new $controllerName();
             if(method_exists($controller, $actionName))
             {
