@@ -5,6 +5,6 @@ use App\Controllers\AdminController;
 use App\Lib\Route\Route;
 
 
-Route::get('',HomeController::class,'index');
+Route::any('',HomeController::class,'index');
 
-Route::get('admin',AdminController::class,'index');
+Route::any('admin',AdminController::class,'index');
