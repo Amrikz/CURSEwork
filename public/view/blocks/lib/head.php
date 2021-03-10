@@ -4,6 +4,8 @@ use App\Lib\Route\Url;
 use Config\AppConfig;
 
 $params = $GLOBALS['head_params'];
+Url::addPrefixToHref($params['links']);
+Url::addPrefixToHref($params['scripts'], 'src=');
 ?>
 
 
@@ -23,6 +25,9 @@ $params = $GLOBALS['head_params'];
 
         <!-- load stylesheets -->
         <?php $params['links'] ? forEachEcho($params['links']) : null?>
+
+        <!-- load absolute scripts -->
+        <?php $params['abs_scripts'] ? forEachEcho($params['abs_links']) : null?>
 
         <!-- load js scripts -->
         <?php $params['scripts'] ? forEachEcho($params['scripts']) : null?>

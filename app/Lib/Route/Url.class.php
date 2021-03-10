@@ -96,4 +96,15 @@ class Url
         if (!$res) $res = '/';
         return $res;
     }
+
+
+    public static function addPrefixToHref(&$arr, $needle = 'href=')
+    {
+        $addition = rtrim(self::getUrlAddition(),'/');
+        if ($addition)
+            foreach ($arr as $key=>$value)
+            {
+                $arr[$key] = substr_replace($value, $addition, strpos($value, $needle) + strlen($needle) + 1, 0);
+            }
+    }
 }

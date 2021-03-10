@@ -20,6 +20,8 @@ class Auth
     public static function __constructStatic()
     {
         self::Initialize();
+        self::$user = $_SESSION['user'];
+        self::$role = $_SESSION['role'];
     }
 
 
@@ -51,7 +53,7 @@ class Auth
 
         self::$status->SwitcherRegister('6','message',"Для этого запроса необходима авторизация");
         self::$status->SwitcherRegister('6','status',false);
-        self::$status->SwitcherRegister('6','required',['token']);
+        self::$status->SwitcherRegister('6','required',[Users::$token_name]);
         self::$status->SwitcherRegister('6','response_code',400);
 
         self::$status->SwitcherRegister('7','message',"Владелец данного токена не найден");
@@ -98,25 +100,35 @@ class Auth
     }
 
 
+    public static function _setUser($user, $role = null)
+    {
+        if (!$role) $role = Roles::GetByID($user[Users::$role_id_name]);
+
+        self::$user = $user;
+        self::$role = $role;
+
+        $_SESSION['user'] = $user;
+        $_SESSION['role'] = $role;
+    }
+
+
     public static function Login($request)
 	{
 		self::NullifyStatus();
 
-        $user = Users::FindBy(Users::$login_name, $request['login'])[0];
-        $request['password'] = password_verify($request['password'], trim($user['password']));
-        if ($request['password'] && $user['id'])
+        $user = Users::FindBy(Users::$login_name, $request[Users::$login_name])[0];
+        $request[Users::$password_name] = password_verify($request[Users::$password_name], trim($user[Users::$password_name]));
+        if ($request[Users::$password_name] && $user['id'])
         {
             $role = Roles::GetByID($user[Users::$role_id_name]);
+            self::_setUser($user,$role);
 
-            self::$user = $user;
-            self::$role = $role;
-
-            $token = self::_generateToken($request['login']);
+            $token = self::_generateToken($request[Users::$login_name]);
             if (Users::UpdateByID($user['id'], [Users::$token_name => $token]))
             {
                 self::$status->StatusSwitch(0);
 
-                self::$status->status['data']['token'] = $token;
+                self::$status->status['data'][Users::$token_name] = $token;
                 self::$status->status['data']['role']  = $role['name'];
 
                 return true;
@@ -132,26 +144,32 @@ class Auth
     }
 
 
-    public static function Register($request)
+    public static function Register($request, $stateless = false)
     {
         self::NullifyStatus();
 
-        if ($request['password'] == $request['c_password'])
+        if ($request[Users::$password_name] == $request['c_'.Users::$password_name])
         {
-            $user = Users::FindBy(Users::$login_name, $request['login'])[0];
+            $user = Users::FindBy(Users::$login_name, $request[Users::$login_name])[0];
             if ($user['id'])
             {
                 self::$status->StatusSwitch(2);
                 return false;
             }
 
-            $request['password']    = trim(password_hash($request['password'], PASSWORD_BCRYPT));
-            $request['token']       = self::_generateToken($request['login']);
+            $request[Users::$password_name]    = trim(password_hash($request[Users::$password_name], PASSWORD_BCRYPT));
+            $request[Users::$token_name]       = self::_generateToken($request[Users::$login_name]);
 
             if (Users::RegisterInsert($request) == 1)
             {
                 self::$status->StatusSwitch(4);
-                self::$status->SetValue('token', $request['token']);
+                self::$status->SetValue(Users::$token_name, $request[Users::$token_name]);
+
+                if (!$stateless)
+                {
+                    $user = Users::FindBy(Users::$login_name, $request[Users::$login_name])[0];
+                    self::_setUser($user);
+                }
 
                 return true;
             }
@@ -179,7 +197,7 @@ class Auth
             self::$status->StatusSwitch(7);
             return false;
         }
-        $user_role = Roles::GetByID($user['role_id']);
+        $user_role = Roles::GetByID($user[Users::$role_id_name]);
 
         if (!in_array('*', $roles) && !in_array($user_role, $roles))
         {

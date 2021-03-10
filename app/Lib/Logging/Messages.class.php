@@ -41,6 +41,7 @@ class Messages
 
     public static function Error($message)
     {
+        if (is_array($message)) $message = arrayDataToStr($message);
         self::$messages['errors'][] = $message;
         Logger::Error(__METHOD__, $message);
     }
@@ -48,6 +49,7 @@ class Messages
 
     public static function Message($message)
     {
+        if (is_array($message)) $message = arrayDataToStr($message);
         self::$messages['messages'][] = $message;
         Logger::Info(__METHOD__, $message);
     }

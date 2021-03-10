@@ -14,13 +14,13 @@ class AdminController extends BaseController
     {
         if (!$_SESSION['user'])
         {
-            header('Location: '.Url::getUrlAddition());
+            header('Location: '.url_addition());
         }
         else
         {
             $user = Users::GetByID($_SESSION['user']['id']);
             $role = Roles::GetByID($user['role_id']);
-            if (!$role || $role['power'] < Roles::$admin_power_level) header('Location: '.Url::getUrlAddition());
+            if (!$role || $role['power'] < Roles::$admin_power_level) header('Location: '.url_addition());
         }
 
         parent::__construct();

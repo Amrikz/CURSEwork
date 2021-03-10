@@ -12,27 +12,29 @@ abstract class BaseController
 {
     public function __construct()
     {
-        if ($_POST['auth'])
+        $request = request();
+        
+        if ($request['auth'])
         {
-            if ($_SESSION['user'])
+            if (Auth::$user)
             {
                 Messages::Error("Вы уже авторизованы!");
             }
             else
             {
-                Auth::Login($_POST['login'], $_POST['password']);
+                Auth::Login($request);
             }
         }
-        elseif ($_POST['register'])
+        elseif ($request['register'])
         {
-            if ($_SESSION['user'])
+            if (Auth::$user)
             {
                 header('Location: '.Url::getUrlAddition());
             }
-            else Auth::Register($_POST['login'], $_POST['password'], $_POST['c_password']);
+            else Auth::Register($request);
         }
 
-        if ($_POST['exit'])
+        if ($request['exit'])
         {
             session_unset();
             session_destroy();

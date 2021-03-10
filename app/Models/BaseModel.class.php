@@ -49,7 +49,7 @@ abstract class BaseModel implements ModelInterface
 
         foreach (static::$fillable_fields as $key=>$field)
         {
-            if ($arr[$field]) $what[$field] = $arr[$field];
+            if (isset($arr[$field])) $what[$field] = $arr[$field];
         }
 
         return $what;

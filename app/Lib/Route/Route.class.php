@@ -31,6 +31,7 @@ class Route
             {
                 Logger::Info(__METHOD__, "$controllerName->$actionName");
                 $response = $controller->$actionName($request, ...$args);
+                flush();
                 response($response);
                 die;
             }

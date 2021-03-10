@@ -22,9 +22,10 @@ class SqlsrvDB implements DBInterface
         $pass       = AppConfig::DBPASS;
         $charset    = AppConfig::DBCHARSET;
 
-        $connectionInfo     = [
-            'Database'      => $db,
-            'CharacterSet'  => $charset
+        $connectionInfo = [
+            'Database'              => $db,
+            'CharacterSet'          => $charset,
+            'ReturnDatesAsStrings'  => true,
         ];
 
         if ($login) $connectionInfo['UID']  = $login;

@@ -20,7 +20,7 @@ class RandomVars
         $multiplier = 1;
         if ($length > 32) $multiplier = ceil($length/32);
 
-        if ($multiplier > 1)
+        if ($multiplier >= 1)
             for ($i = 0; $i != $multiplier; $i++)
             {
                 $hash .= MD5(microtime());

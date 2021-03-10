@@ -47,7 +47,7 @@ class Validator
                 switch ($value)
                 {
                     case 'required':
-                        if (!isset($params[$id]) || !$params[$id])
+                        if (!isset($params[$id]) || $params[$id] == "")
                         {
                             $this->status->AddArrValue('required', $id);
                             $flag = false;
@@ -85,9 +85,16 @@ class Validator
     }
 
 
-    public function Status()
+    public function Status($str_mode = false)
     {
         $status = $this->status->GetArrStatus();
+
+        if ($str_mode)
+        {
+            $status['required'] = arrayDataToStr($status['required']);
+            $status['message']  = arrayDataToStr($status['message']);
+        }
+
         $this->status->SetValue('required', $status['required']);
         $this->status->SetValue('message', $status['message']);
         return $this->status->GetArrStatus();
