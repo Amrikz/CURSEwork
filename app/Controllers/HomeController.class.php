@@ -15,7 +15,7 @@ class HomeController extends BaseController
             "<link rel='stylesheet' href='/public/css/welcome.css'>",
         ];
 
-        ViewBuilder::build(['pages','index.php']);
+        ViewBuilder::build(['pages','index','index.php']);
         View::ViewDir(join(DIRECTORY_SEPARATOR,['blocks','lib','footer.php']));
     }
 }
