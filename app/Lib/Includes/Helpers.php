@@ -72,9 +72,9 @@ function forEachEcho($arr)
 }
 
 
-function url_addition()
+function url_addition($add_slash = true)
 {
-    return Url::getUrlAddition();
+    return Url::getUrlAddition($add_slash);
 }
 
 

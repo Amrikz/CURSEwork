@@ -91,9 +91,9 @@ class Url
     }
 
 
-    public static function getUrlAddition() {
+    public static function getUrlAddition($add_slash = true) {
         $res = str_replace($_GET['url'],'', $_SERVER['REDIRECT_URL']);
-        if (!$res) $res = '/';
+        if (!$res && $add_slash) $res = '/';
         return $res;
     }
 
