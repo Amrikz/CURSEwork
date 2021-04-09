@@ -5,7 +5,7 @@ namespace App\Models;
 
 
 use App\Jobs\Auth\Auth;
-use App\Lib\Middleware\Repository;
+use Bin\Framework\Lib\Middleware\Repository;
 
 abstract class BaseModel implements ModelInterface
 {

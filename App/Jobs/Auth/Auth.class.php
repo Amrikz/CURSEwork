@@ -4,10 +4,10 @@
 namespace App\Jobs\Auth;
 
 
-use App\Lib\Random\RandomVars;
+use Bin\Framework\Lib\Random\RandomVars;
+use Bin\Framework\Lib\Logging\Status;
 use App\Models\Roles;
 use App\Models\Users;
-use App\Lib\Logging\Status;
 
 class Auth 
 {

@@ -1,6 +1,6 @@
 <?php
 
-use App\Lib\Route\Url;
+use Bin\Framework\Lib\Route\Url;
 use Config\AppConfig;
 
 $params = $GLOBALS['head_params'];

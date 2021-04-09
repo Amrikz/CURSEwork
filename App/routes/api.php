@@ -1,6 +1,6 @@
 <?php
 
-use App\Lib\Route\Route;
+use Bin\Framework\Lib\Route\Route;
 
 //!!!UNDER DEVELOPMENT!!!
 //Route::get('a',App\Controllers\HomeController::class,'index');

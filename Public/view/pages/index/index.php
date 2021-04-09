@@ -1,6 +1,6 @@
 <?php
 
-use App\Lib\Random\RandomVars;
+use Bin\Framework\Lib\Random\RandomVars;
 
 $phrases = [
     "Ну и название...",

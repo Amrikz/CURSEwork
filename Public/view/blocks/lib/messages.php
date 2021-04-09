@@ -2,7 +2,7 @@
 
 
 use App\Jobs\Auth\Auth;
-use App\Lib\Logging\Messages;
+use Bin\Framework\Lib\Logging\Messages;
 
 $messages = Messages::GetAsStatus();
 $messages[] = Auth::GetArrStatus();

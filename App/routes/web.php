@@ -2,7 +2,7 @@
 
 use App\Controllers\HomeController;
 use App\Controllers\AdminController;
-use App\Lib\Route\Route;
+use Bin\Framework\Lib\Route\Route;
 
 # ['auth' => ["*"]] in params, to activate token protection. Instead '*' may be array of roles.
 

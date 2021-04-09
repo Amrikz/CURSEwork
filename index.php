@@ -8,9 +8,11 @@
 
 
 /*
- * Define project root directory
+ * Basic startup defines
  */
 define('PROJECT_DIR', __DIR__);
+define('BIN_DIR', 'Bin');
+define('FRAMEWORK_DIR', join(DIRECTORY_SEPARATOR, [BIN_DIR, 'Framework']));
 
 /*
  * Override Server php.ini conf for startup errors
@@ -21,12 +23,12 @@ ini_set('display_startup_errors', 1);
 /*
  * Init modules in one place
  */
-require_once join(DIRECTORY_SEPARATOR,['App','Lib','Includes','init.php']);
+require_once join(DIRECTORY_SEPARATOR,[FRAMEWORK_DIR,'Lib','Includes','init.php']);
 
 /*
  * Routes middleware
  */
-require_once join(DIRECTORY_SEPARATOR,['App','Lib','Middleware','RouteMiddleware.php']);
+require_once join(DIRECTORY_SEPARATOR,[FRAMEWORK_DIR,'Lib','Middleware','RouteMiddleware.php']);
 
 
 

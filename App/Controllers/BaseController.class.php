@@ -5,10 +5,10 @@ namespace App\Controllers;
 
 
 use App\Jobs\Auth\Auth;
-use App\Lib\Format\Validator;
-use App\Lib\Logging\Messages;
-use App\Lib\Logging\Status;
-use App\Lib\Route\Url;
+use Bin\Framework\Lib\Format\Validator;
+use Bin\Framework\Lib\Logging\Messages;
+use Bin\Framework\Lib\Logging\Status;
+use Bin\Framework\Lib\Route\Url;
 
 abstract class BaseController
 {

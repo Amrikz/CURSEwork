@@ -4,7 +4,7 @@
 namespace App\Jobs\Builders;
 
 
-use App\Lib\File\View;
+use Bin\Framework\Lib\File\View;
 
 class ViewBuilder
 {

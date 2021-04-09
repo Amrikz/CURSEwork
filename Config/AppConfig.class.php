@@ -4,7 +4,7 @@
 namespace Config;
 
 
-use App\Lib\Database\PdoDB;
+use Bin\Framework\Lib\Database\PdoDB;
 
 class AppConfig
 {

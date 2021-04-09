@@ -5,7 +5,7 @@ namespace App\Controllers;
 
 
 use App\Jobs\Builders\ViewBuilder;
-use App\Lib\File\View;
+use Bin\Framework\Lib\File\View;
 
 class HomeController extends BaseController
 {
