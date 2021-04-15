@@ -1,5 +1,5 @@
-# CURSEwork
-![Scrutinizer score](https://scrutinizer-ci.com/g/Amrikz/CURSEwork/badges/quality-score.png?b=master) ![Scrutinizer build](https://scrutinizer-ci.com/g/Amrikz/CURSEwork/badges/build.png?b=master)  
+<h1 align="center"> CURSEwork </h1>
+<p align="center"> <img src="https://scrutinizer-ci.com/g/Amrikz/CURSEwork/badges/quality-score.png?b=master"> <img src="https://scrutinizer-ci.com/g/Amrikz/CURSEwork/badges/build.png?b=master"></p>
 Coursework mini-framework.
 Фреймворк для "быстрого и простого" создания курсачей, мелких работ и т.д.
 Вначале он таковым и задумывался.
