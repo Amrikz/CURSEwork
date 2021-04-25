@@ -42,4 +42,10 @@ class Response
         }
         self::_responseBody(json_encode($arr),$response_code);
     }
+
+
+    public static function Raw($data, $response_code = 200)
+    {
+        self::_responseBody($data,$response_code);
+    }
 }

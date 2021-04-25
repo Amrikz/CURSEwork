@@ -70,6 +70,7 @@ class Route
 
         if (self::$_required_methods && !empty(self::$_required_methods))
         {
+            http_response_code(405);
             makeError("This URL is not supporting ".$_SERVER['REQUEST_METHOD']." method. Supported methods:".arrayDataToStr(self::$_required_methods));
         }
     }

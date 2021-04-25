@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Jobs\Auth\Auth;
 use Bin\Framework\Lib\Middleware\Repository;
+use Config\AppConfig;
 
 abstract class BaseModel implements ModelInterface
 {
@@ -34,6 +35,17 @@ abstract class BaseModel implements ModelInterface
     {
         if (!$arr || $complete)
             static::$fillable_fields = null;
+        elseif ($arr == '*')
+        {
+            $vars = get_class_vars(static::class);
+            foreach ($vars as $key=>$var)
+            {
+                if (strpos($key,'_name') && !in_array($key,AppConfig::FILLABLE_BLACKLIST))
+                {
+                    static::$fillable_fields[] = str_replace('_name', '', $key);
+                }
+            }
+        }
         else
             foreach ($arr as $key=>$value)
             {
@@ -43,11 +55,24 @@ abstract class BaseModel implements ModelInterface
     }
 
 
+    protected static function fillable_exclude($arr)
+    {
+        foreach ($arr as $value)
+        {
+            $fillable =& static::$fillable_fields;
+            if (in_array($value, $fillable))
+                unset($fillable[array_search($value, $fillable)]);
+            elseif (in_array($value.'_name', $fillable))
+                unset($fillable[array_search($value.'_name', $fillable)]);
+        }
+    }
+
+
     private static function _params_for_edit($arr = null)
     {
         $what = null;
 
-        foreach (static::$fillable_fields as $key=>$field)
+        foreach (static::$fillable_fields as $field)
         {
             if (isset($arr[$field])) $what[$field] = $arr[$field];
         }

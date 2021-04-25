@@ -34,7 +34,9 @@ class AppConfig
     //Relative path to /view
     const VIEW_DIR      = self::PUBLIC_DIR.'view'.DIRECTORY_SEPARATOR;
     //Relative path to /logs
-    const LOGS_DIR      = DIRECTORY_SEPARATOR.'Data'.DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR;
+    const DATA_DIR      = DIRECTORY_SEPARATOR.'Data'.DIRECTORY_SEPARATOR;
+    //Relative path to /logs
+    const LOGS_DIR      = self::DATA_DIR.'logs'.DIRECTORY_SEPARATOR;
 
 
     //Allowed file upload types
@@ -78,4 +80,9 @@ class AppConfig
     //Response
     const RESPONSE_TYPE = "JSON" /*"ARR"*/;
 
+
+    //Ignored params in model fillable auto init (*)
+    const FILLABLE_BLACKLIST = [
+        'table_name',
+    ];
 }
