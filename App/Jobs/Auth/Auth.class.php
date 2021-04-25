@@ -134,13 +134,12 @@ class Auth
                 return true;
             }
             self::$status->StatusSwitch(5);
-            return false;
         }
         else
         {
             self::$status->StatusSwitch(1);
-            return false;
         }
+        return false;
     }
 
 
@@ -173,14 +172,13 @@ class Auth
 
                 return true;
             }
-            return false;
         }
         else
         {
             self::$status->StatusSwitch(3);
-            return false;
         }
-	}
+        return false;
+    }
 
 
 	public static function TokenCheck($token, $roles)
